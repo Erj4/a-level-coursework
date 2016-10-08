@@ -113,4 +113,8 @@ public class Main extends Application {
 		SecretKey key = skf.generateSecret(spec);
 		return key.getEncoded();
 	}
+	
+	public void vmShutDown(){
+		// TODO Work out if unexpected, if so leave info
+	}
 }
