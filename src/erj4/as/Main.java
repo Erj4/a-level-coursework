@@ -21,6 +21,8 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
+import erj4.as.DatabaseConnection;
+
 public class Main extends Application {
 
 	public static DatabaseConnection db;

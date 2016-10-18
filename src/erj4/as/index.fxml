@@ -12,10 +12,9 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<StackPane stylesheets="@index.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane styleClass="bkgd" stylesheets="@index.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox prefHeight="400.0" prefWidth="600.0">
+      <VBox prefHeight="400.0" prefWidth="600.0" styleClass="main">
          <children>
             <MenuBar>
                <menus>
@@ -52,7 +51,7 @@
             </HBox>
          </children>
       </VBox>
-      <AnchorPane styleClass="dimAnchor">
+      <AnchorPane visible="false">
          <children>
             <VBox fillWidth="false" spacing="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>

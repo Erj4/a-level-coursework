@@ -1,4 +1,7 @@
-.dimAnchor{
+.bkgd{
 	-fx-background-color: gray;
-	-fx-background-opacity: 
+}
+.main{
+	-fx-background-color: white;
+	-fx-opacity: 1;//0.3
 }
