@@ -168,3 +168,7 @@ Temporary Items
 /target/
 /target/
 /target/
+
+
+# Databases
+*.db
