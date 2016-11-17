@@ -2,9 +2,11 @@ package erj4.as;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -46,22 +48,31 @@ public class LoginController extends VBox{
 			e.printStackTrace();
 		}
 		if (resultFound){
-			if (passwordIsCorrect(passwordField.getText(), salt.getBytes(), shPassword)){
-				logIn(usernameField.getText(), passwordField.getText());
-			}
-			else {
-				System.out.println("Incorrect password");
+			try {
+				if (passwordIsCorrect(passwordField.getText(), salt.getBytes("UTF-8"), shPassword.getBytes("UTF-8"))){
+					logIn(usernameField.getText(), passwordField.getText());
+				}
+				else {
+					System.out.println("Incorrect password");
+				}
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
 			}
 		}
 	}
 	
-	private boolean passwordIsCorrect(String password, byte[] salt, String correctHash) {
+	private boolean passwordIsCorrect(String password, byte[] salt, byte[] correctHash) {
+		salt = new byte[64];
 		try {
 			System.out.println("Comparing: " + new String(Main.hash(password,salt), "UTF-8"));
-			System.out.println("     With: " + correctHash);
+			System.out.println("     With: " + new String(correctHash, "UTF-8"));
 			System.out.println("     Salt: " + new String(salt, "UTF-8"));
 		} catch (UnsupportedEncodingException e){Main.fatalError(e, e.getMessage());}
-		return (Main.hash(password, salt).equals(correctHash.getBytes()));
+		byte[] result=Main.hash(password, salt);
+		System.out.println(Main.hash(password,salt).length +" "+ correctHash.length);
+		System.out.println( Arrays.equals(Main.hash(password,salt), correctHash) );
+		
+		return( Arrays.equals(Main.hash(password,salt), correctHash) );
 	}
 	
 	@FXML

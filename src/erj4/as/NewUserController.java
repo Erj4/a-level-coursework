@@ -31,7 +31,7 @@ public class NewUserController extends VBox implements Initializable{
 		PreparedStatement selectStatement = Main.db.newStatement("SELECT User FROM Users WHERE User=?");
 		String username = usernameField.getText(); // For thread-safety
 		String password = passwordField.getText(); // ^^
-		// If using (password/username).getText(), it is theoretically possible for the value to change between verification and user creation (a bad thing)
+		// If using (password/username).getText() repeatedly, it is theoretically possible for the value to change between verification and user creation (a bad thing)
 		boolean[] failures = {false, false, false, false};
 		boolean failed = false;
 		if (username.equals("")){
@@ -84,6 +84,8 @@ public class NewUserController extends VBox implements Initializable{
 		try {
 			create.setString(1, username);
 			byte[] salt = Main.randomBytes(64);
+			salt = new byte[64];
+			byte[] debug = Main.hash(password, salt);
 			create.setString(2, new String(Main.hash(password, salt), "UTF-8"));
 			create.setString(3, new String(salt, "UTF-8"));
 			create.executeUpdate();
