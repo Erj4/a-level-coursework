@@ -27,7 +27,7 @@ public class LoginController extends VBox{
 	
 	@FXML
 	public void authenticate(){
-		PreparedStatement s = Main.db.newStatement("SELECT SHPass, Salt FROM Users WHERE User=?");
+		PreparedStatement s = Main.db.newStatement("SELECT hskey, salt FROM Users WHERE username=?");
 		try {
 			s.setString(1, usernameField.getText());
 		} catch (SQLException e) {
@@ -47,17 +47,19 @@ public class LoginController extends VBox{
 		catch (SQLException e) {
 			e.printStackTrace();
 		}
-		if (resultFound){
-			try {
-				if (passwordIsCorrect(passwordField.getText(), salt.getBytes("UTF-8"), shPassword.getBytes("UTF-8"))){
-					logIn(usernameField.getText(), passwordField.getText());
-				}
-				else {
-					System.out.println("Incorrect password");
-				}
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
+		if(!resultFound) {
+			System.out.print("User not found");
+			return;
+		}
+		try {
+			if (passwordIsCorrect(passwordField.getText(), salt.getBytes("UTF-8"), shPassword.getBytes("UTF-8"))){
+				logIn(usernameField.getText(), passwordField.getText());
 			}
+			else {
+				System.out.println("Incorrect password");
+			}
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
 		}
 	}
 	

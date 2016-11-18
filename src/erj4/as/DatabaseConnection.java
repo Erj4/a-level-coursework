@@ -10,12 +10,104 @@ import java.sql.Statement;
 public class DatabaseConnection {
 
     private Connection conection = null;
-    private String[] dbCreationStatement = {"PRAGMA foreign_keys = off;\r\n", 
+    private String[] dbCreationStatement = {
+    		"PRAGMA foreign_keys = off;\r\n",
     		"BEGIN TRANSACTION;\r\n",
-    		"CREATE TABLE IF NOT EXISTS Data (ID INTEGER PRIMARY KEY, User STRING REFERENCES Users (User) ON DELETE CASCADE ON UPDATE CASCADE, EncryptedUsername STRING, EncryptedPassword STRING, EncryptedNotes STRING, IV STRING NOT NULL);\r\n",
-    		"CREATE TABLE IF NOT EXISTS Users (User STRING PRIMARY KEY UNIQUE, SHPass STRING, Salt STRING NOT NULL);\r\n",
+    		"CREATE TABLE UserSettings (\r\n" + 
+    		"    username CHAR NOT NULL,\r\n" + 
+    		"    PRIMARY KEY (\r\n" + 
+    		"        username\r\n" + 
+    		"    ),\r\n" + 
+    		"    FOREIGN KEY (\r\n" + 
+    		"        username\r\n" + 
+    		"    )\r\n" + 
+    		"    REFERENCES Users (username) \r\n" + 
+    		");",
+    		"CREATE TABLE Users (\r\n" + 
+    		"    username CHAR      NOT NULL,\r\n" + 
+    		"    hsKey    CHAR (64) NOT NULL,\r\n" + 
+    		"    salt     CHAR (64) NOT NULL,\r\n" + 
+    		"    PRIMARY KEY (\r\n" + 
+    		"        username\r\n" + 
+    		"    )\r\n" + 
+    		");",
+    		"CREATE TABLE Wallets (\r\n" + 
+    		"    walletID            INT  NOT NULL,\r\n" + 
+    		"    encryptedWalletName INT  NOT NULL,\r\n" + 
+    		"    username            CHAR NOT NULL,\r\n" + 
+    		"    PRIMARY KEY (\r\n" + 
+    		"        walletID\r\n" + 
+    		"    ),\r\n" + 
+    		"    FOREIGN KEY (\r\n" + 
+    		"        username\r\n" + 
+    		"    )\r\n" + 
+    		"    REFERENCES Users (username) \r\n" + 
+    		");",
+    		"CREATE TABLE Templates (\r\n" + 
+    		"    templateID            INT  NOT NULL,\r\n" + 
+    		"    encryptedTemplateName INT  NOT NULL,\r\n" + 
+    		"    username              CHAR NOT NULL,\r\n" + 
+    		"    PRIMARY KEY (\r\n" + 
+    		"        templateID\r\n" + 
+    		"    ),\r\n" + 
+    		"    FOREIGN KEY (\r\n" + 
+    		"        username\r\n" + 
+    		"    )\r\n" + 
+    		"    REFERENCES Users (username) \r\n" + 
+    		");",
+    		"CREATE TABLE Customs (\r\n" + 
+    		"    customID   INT NOT NULL,\r\n" + 
+    		"    templateID INT NOT NULL,\r\n" + 
+    		"    PRIMARY KEY (\r\n" + 
+    		"        customID\r\n" + 
+    		"    ),\r\n" + 
+    		"    FOREIGN KEY (\r\n" + 
+    		"        templateID\r\n" + 
+    		"    )\r\n" + 
+    		"    REFERENCES Templates (templateID) \r\n" + 
+    		");",
+    		"CREATE TABLE CustomColumns (\r\n" + 
+    		"    columnID            INT     NOT NULL,\r\n" + 
+    		"    encryptedColumnName VARCHAR NOT NULL,\r\n" + 
+    		"    customID            INT     NOT NULL,\r\n" + 
+    		"    PRIMARY KEY (\r\n" + 
+    		"        columnID\r\n" + 
+    		"    ),\r\n" + 
+    		"    FOREIGN KEY (\r\n" + 
+    		"        customID\r\n" + 
+    		"    )\r\n" + 
+    		"    REFERENCES Customs (customID) \r\n" + 
+    		");",
+    		"CREATE TABLE CustomInWallet (\r\n" + 
+    		"    customID INT NOT NULL,\r\n" + 
+    		"    walletID INT NOT NULL,\r\n" + 
+    		"    PRIMARY KEY (\r\n" + 
+    		"        customID,\r\n" + 
+    		"        walletID\r\n" + 
+    		"    ),\r\n" + 
+    		"    FOREIGN KEY (\r\n" + 
+    		"        customID\r\n" + 
+    		"    )\r\n" + 
+    		"    REFERENCES Customs (customID),\r\n" + 
+    		"    FOREIGN KEY (\r\n" + 
+    		"        walletID\r\n" + 
+    		"    )\r\n" + 
+    		"    REFERENCES Wallets (walletID) \r\n" + 
+    		");",
+    		"CREATE TABLE CustomData (\r\n" + 
+    		"    dataID        INT NOT NULL,\r\n" + 
+    		"    encryptedData INT NOT NULL,\r\n" + 
+    		"    columnID      INT NOT NULL,\r\n" + 
+    		"    PRIMARY KEY (\r\n" + 
+    		"        dataID\r\n" + 
+    		"    ),\r\n" + 
+    		"    FOREIGN KEY (\r\n" + 
+    		"        columnID\r\n" + 
+    		"    )\r\n" + 
+    		"    REFERENCES CustomColumns (columnID) \r\n" + 
+    		");",
     		"COMMIT TRANSACTION;\r\n",
-    		"PRAGMA foreign_keys = on;"};
+    		"PRAGMA foreign_keys = on;\r\n"};
     private String username = null;
 
     /* This method is the constructor. When a new DatabaseConnection object is created a connection

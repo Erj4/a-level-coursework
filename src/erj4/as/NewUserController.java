@@ -80,7 +80,7 @@ public class NewUserController extends VBox implements Initializable{
 	}
 
 	private void createUser(String username, String password) {
-		PreparedStatement create = Main.db.newStatement("INSERT INTO Users (User, SHPass, Salt) VALUES (?, ?, ?);");
+		PreparedStatement create = Main.db.newStatement("INSERT INTO Users (username, hspass, salt) VALUES (?, ?, ?);");
 		try {
 			create.setString(1, username);
 			byte[] salt = Main.randomBytes(64);
