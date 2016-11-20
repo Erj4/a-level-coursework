@@ -2,7 +2,6 @@ package erj4.as;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
-import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
