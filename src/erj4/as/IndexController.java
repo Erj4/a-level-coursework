@@ -1,15 +1,7 @@
 package erj4.as;
 
 import javafx.fxml.FXML;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.Button;
 
-public class IndexController extends StackPane{
-	
-	@FXML private AnchorPane menuPane;
-	
-	@FXML
-	public void toggleMenu(){
-		System.out.println("HI ED");
-	}
+public class IndexController extends SuperController{
 }

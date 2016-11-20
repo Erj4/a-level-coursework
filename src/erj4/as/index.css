@@ -1,7 +1,17 @@
-.bkgd{
-	-fx-background-color: gray;
+.bkgd {
+    -fx-background-color: gray;
+    -fx-border-color: lightgray;
+    -fx-border-width: 1 0 0 0;
 }
-.main{
-	-fx-background-color: white;
-	-fx-opacity: 1;//0.3
+.main {
+    -fx-background-color: white;
+    -fx-opacity: 1; //0.3
+}
+.menuBar {
+    -fx-effect: dropshadow(three-pass-box, lightgray, 5, 0.0, 0, 5);
+    -fx-background-color: white;
+}
+.sideMenu {
+    -fx-effect: dropshadow(three-pass-box, gray, 5, 0.0, 5, 0);
+    -fx-background-color: white;
 }
