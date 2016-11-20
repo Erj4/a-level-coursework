@@ -13,7 +13,7 @@ public class DatabaseConnection {
     private String[] dbCreationStatement = {
     		"PRAGMA foreign_keys = off;\r\n",
     		"BEGIN TRANSACTION;\r\n",
-    		"CREATE TABLE UserSettings (\r\n" + 
+    		"CREATE TABLE IF NOT EXISTS UserSettings (\r\n" + 
     		"    username CHAR NOT NULL,\r\n" + 
     		"    PRIMARY KEY (\r\n" + 
     		"        username\r\n" + 
@@ -23,17 +23,17 @@ public class DatabaseConnection {
     		"    )\r\n" + 
     		"    REFERENCES Users (username) \r\n" + 
     		");",
-    		"CREATE TABLE Users (\r\n" + 
+    		"CREATE TABLE IF NOT EXISTS Users (\r\n" + 
     		"    username CHAR      NOT NULL,\r\n" + 
-    		"    hsKey    CHAR (64) NOT NULL,\r\n" + 
-    		"    salt     CHAR (64) NOT NULL,\r\n" + 
+    		"    hsKey    BLOB		NOT NULL,\r\n" + 
+    		"    salt     BLOB		NOT NULL,\r\n" + 
     		"    PRIMARY KEY (\r\n" + 
     		"        username\r\n" + 
     		"    )\r\n" + 
     		");",
-    		"CREATE TABLE Wallets (\r\n" + 
+    		"CREATE TABLE IF NOT EXISTS Wallets (\r\n" + 
     		"    walletID            INT  NOT NULL,\r\n" + 
-    		"    encryptedWalletName INT  NOT NULL,\r\n" + 
+    		"    encryptedWalletName BLOB NOT NULL,\r\n" + 
     		"    username            CHAR NOT NULL,\r\n" + 
     		"    PRIMARY KEY (\r\n" + 
     		"        walletID\r\n" + 
@@ -43,19 +43,19 @@ public class DatabaseConnection {
     		"    )\r\n" + 
     		"    REFERENCES Users (username) \r\n" + 
     		");",
-    		"CREATE TABLE Templates (\r\n" + 
+    		"CREATE TABLE IF NOT EXISTS Templates (\r\n" + 
     		"    templateID            INT  NOT NULL,\r\n" + 
-    		"    encryptedTemplateName INT  NOT NULL,\r\n" + 
-    		"    username              CHAR NOT NULL,\r\n" + 
+    		"    encryptedTemplateName BLOB NOT NULL,\r\n" + 
+    		"    owner				   CHAR NOT NULL,\r\n" + 
     		"    PRIMARY KEY (\r\n" + 
     		"        templateID\r\n" + 
     		"    ),\r\n" + 
     		"    FOREIGN KEY (\r\n" + 
-    		"        username\r\n" + 
+    		"        owner \r\n" + 
     		"    )\r\n" + 
     		"    REFERENCES Users (username) \r\n" + 
     		");",
-    		"CREATE TABLE Customs (\r\n" + 
+    		"CREATE TABLE IF NOT EXISTS Customs (\r\n" + 
     		"    customID   INT NOT NULL,\r\n" + 
     		"    templateID INT NOT NULL,\r\n" + 
     		"    PRIMARY KEY (\r\n" + 
@@ -66,9 +66,9 @@ public class DatabaseConnection {
     		"    )\r\n" + 
     		"    REFERENCES Templates (templateID) \r\n" + 
     		");",
-    		"CREATE TABLE CustomColumns (\r\n" + 
+    		"CREATE TABLE IF NOT EXISTS CustomColumns (\r\n" + 
     		"    columnID            INT     NOT NULL,\r\n" + 
-    		"    encryptedColumnName VARCHAR NOT NULL,\r\n" + 
+    		"    encryptedColumnName BLOB	 NOT NULL,\r\n" + 
     		"    customID            INT     NOT NULL,\r\n" + 
     		"    PRIMARY KEY (\r\n" + 
     		"        columnID\r\n" + 
@@ -78,7 +78,7 @@ public class DatabaseConnection {
     		"    )\r\n" + 
     		"    REFERENCES Customs (customID) \r\n" + 
     		");",
-    		"CREATE TABLE CustomInWallet (\r\n" + 
+    		"CREATE TABLE IF NOT EXISTS CustomInWallet (\r\n" + 
     		"    customID INT NOT NULL,\r\n" + 
     		"    walletID INT NOT NULL,\r\n" + 
     		"    PRIMARY KEY (\r\n" + 
@@ -94,10 +94,10 @@ public class DatabaseConnection {
     		"    )\r\n" + 
     		"    REFERENCES Wallets (walletID) \r\n" + 
     		");",
-    		"CREATE TABLE CustomData (\r\n" + 
-    		"    dataID        INT NOT NULL,\r\n" + 
-    		"    encryptedData INT NOT NULL,\r\n" + 
-    		"    columnID      INT NOT NULL,\r\n" + 
+    		"CREATE TABLE IF NOT EXISTS CustomData (\r\n" + 
+    		"    dataID        INT  NOT NULL,\r\n" + 
+    		"    encryptedData BLOB NOT NULL,\r\n" + 
+    		"    columnID      INT  NOT NULL,\r\n" + 
     		"    PRIMARY KEY (\r\n" + 
     		"        dataID\r\n" + 
     		"    ),\r\n" + 

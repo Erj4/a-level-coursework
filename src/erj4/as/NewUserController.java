@@ -2,9 +2,11 @@ package erj4.as;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
@@ -28,7 +30,7 @@ public class NewUserController extends VBox implements Initializable{
 
 	@FXML
 	private void newUser(){
-		PreparedStatement selectStatement = Main.db.newStatement("SELECT User FROM Users WHERE User=?");
+		PreparedStatement selectStatement = Main.db.newStatement("SELECT username FROM Users WHERE username=?");
 		String username = usernameField.getText(); // For thread-safety
 		String password = passwordField.getText(); // ^^
 		// If using (password/username).getText() repeatedly, it is theoretically possible for the value to change between verification and user creation (a bad thing)
@@ -80,17 +82,53 @@ public class NewUserController extends VBox implements Initializable{
 	}
 
 	private void createUser(String username, String password) {
-		PreparedStatement create = Main.db.newStatement("INSERT INTO Users (username, hspass, salt) VALUES (?, ?, ?);");
+		PreparedStatement create = Main.db.newStatement("INSERT INTO Users (username, hskey, salt) VALUES (?, ?, ?);");
 		try {
 			create.setString(1, username);
 			byte[] salt = Main.randomBytes(64);
-			salt = new byte[64];
-			byte[] debug = Main.hash(password, salt);
-			create.setString(2, new String(Main.hash(password, salt), "UTF-8"));
-			create.setString(3, new String(salt, "UTF-8"));
+			create.setBytes(2, Main.hash(password, salt));
+			create.setBytes(3, salt);
 			create.executeUpdate();
-		} catch (SQLException e) {e.printStackTrace();} 
-		catch (UnsupportedEncodingException e){e.printStackTrace();}
+			verifyInsertion(username, Main.hash(password, salt), salt); // Check data in database is correct
+		} catch (SQLException e) {e.printStackTrace();}
+	}
+	
+	private void verifyInsertion(String username, byte[] hash, byte[] salt){ // For debugging - checks data in database is same as values in variables
+		PreparedStatement s = Main.db.newStatement("SELECT hskey, salt FROM Users WHERE username=?");
+		try {
+			s.setString(1, usernameField.getText());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		boolean resultFound = false;
+		byte[] dbHash = null;
+		byte[] dbSalt = null;
+		try {
+			ResultSet results = Main.db.runQuery(s);
+			resultFound = results.isBeforeFirst();
+			if (resultFound){
+				dbHash = results.getBytes("hskey");
+				dbSalt = results.getBytes("salt"); 
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		if(!resultFound) {
+			System.out.print("Test failed");
+			return;
+		}
+		if(!Arrays.equals(hash, dbHash)){
+			try {
+				System.out.println("Hash insertion failed:\n"+new String(hash, "UTF-8")+"\nvs\n"+new String(dbHash, "UTF-8"));
+			} catch (UnsupportedEncodingException e) { e.printStackTrace(); }
+		}
+		if(!Arrays.equals(salt,  dbSalt)){
+			try {
+				System.out.println("Salt insertion failed:\n"+new String(salt, "UTF-8")+"\nvs\n"+new String(dbSalt, "UTF-8"));
+			} catch (UnsupportedEncodingException e) { e.printStackTrace(); }
+		}
+		System.out.println("Insertion test complete");
 	}
 
 	public boolean validPassword(String password){
