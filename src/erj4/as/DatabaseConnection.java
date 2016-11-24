@@ -35,6 +35,7 @@ public class DatabaseConnection {
     		"    walletID            INTEGER NOT NULL,\r\n" + 
     		"    encryptedWalletName BLOB 	 NOT NULL,\r\n" + 
     		"    username            CHAR	 NOT NULL,\r\n" + 
+    		"    iv		             BLOB	 NOT NULL,\r\n" + 
     		"    PRIMARY KEY (\r\n" + 
     		"        walletID\r\n" + 
     		"    ),\r\n" + 
@@ -47,6 +48,7 @@ public class DatabaseConnection {
     		"    templateID            INTEGER NOT NULL,\r\n" + 
     		"    encryptedTemplateName BLOB	   NOT NULL,\r\n" + 
     		"    owner				   CHAR    NOT NULL,\r\n" + 
+    		"    iv		           	   BLOB	   NOT NULL,\r\n" + 
     		"    PRIMARY KEY (\r\n" + 
     		"        templateID\r\n" + 
     		"    ),\r\n" + 
@@ -68,8 +70,9 @@ public class DatabaseConnection {
     		");",
     		"CREATE TABLE IF NOT EXISTS CustomColumns (\r\n" + 
     		"    column ID			    INTEGER     NOT NULL,\r\n" + 
-    		"    encryptedColumnName    BLOB		   NOT NULL,\r\n" + 
+    		"    encryptedColumnName    BLOB		NOT NULL,\r\n" + 
     		"    templateID             INTEGER     NOT NULL,\r\n" + 
+    		"    iv		             	BLOB		NOT NULL,\r\n" + 
     		"    PRIMARY KEY (\r\n" + 
     		"        templateID\r\n" + 
     		"    ),\r\n" + 
@@ -98,6 +101,7 @@ public class DatabaseConnection {
     		"    customID       INTEGER  NOT NULL,\r\n" + 
     		"    columnID       INTEGER  NOT NULL,\r\n" + 
     		"    encryptedData  BLOB 	 NOT NULL,\r\n" + 
+    		"    iv		        BLOB	 NOT NULL,\r\n" + 
     		"    PRIMARY KEY (\r\n" + 
     		"        customID,\r\n" + 
     		"		 columnID\r\n" +
