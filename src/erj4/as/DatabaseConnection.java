@@ -58,8 +58,10 @@ public class DatabaseConnection {
     		"    REFERENCES Users (username) \r\n" + 
     		");",
     		"CREATE TABLE IF NOT EXISTS Customs (\r\n" + 
-    		"    customID   INTEGER NOT NULL,\r\n" + 
-    		"    templateID INTEGER NOT NULL,\r\n" + 
+    		"    customID      			INTEGER NOT NULL,\r\n" + 
+    		"    templateID	   			INTEGER NOT NULL,\r\n" + 
+    		"    encryptedCustomName 	BLOB	NOT NULL,\r\n" + 
+    		"    iv		       			BLOB	NOT NULL,\r\n" + 
     		"    PRIMARY KEY (\r\n" + 
     		"        customID\r\n" + 
     		"    ),\r\n" + 
