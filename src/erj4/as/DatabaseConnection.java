@@ -67,16 +67,16 @@ public class DatabaseConnection {
     		"    REFERENCES Templates (templateID) \r\n" + 
     		");",
     		"CREATE TABLE IF NOT EXISTS CustomColumns (\r\n" + 
-    		"    columnID            INTEGER     NOT NULL,\r\n" + 
-    		"    encryptedColumnName BLOB	 	 NOT NULL,\r\n" + 
-    		"    customID            INTEGER     NOT NULL,\r\n" + 
+    		"    column ID			    INTEGER     NOT NULL,\r\n" + 
+    		"    encryptedColumnName    BLOB		   NOT NULL,\r\n" + 
+    		"    templateID             INTEGER     NOT NULL,\r\n" + 
     		"    PRIMARY KEY (\r\n" + 
-    		"        columnID\r\n" + 
+    		"        templateID\r\n" + 
     		"    ),\r\n" + 
     		"    FOREIGN KEY (\r\n" + 
-    		"        customID\r\n" + 
+    		"        templateID\r\n" + 
     		"    )\r\n" + 
-    		"    REFERENCES Customs (customID) \r\n" + 
+    		"    REFERENCES Templates (templateID) \r\n" + 
     		");",
     		"CREATE TABLE IF NOT EXISTS CustomInWallet (\r\n" + 
     		"    customID INTEGER NOT NULL,\r\n" + 
@@ -95,12 +95,17 @@ public class DatabaseConnection {
     		"    REFERENCES Wallets (walletID) \r\n" + 
     		");",
     		"CREATE TABLE IF NOT EXISTS CustomData (\r\n" + 
-    		"    dataID        INTEGER  NOT NULL,\r\n" + 
-    		"    encryptedData BLOB 	NOT NULL,\r\n" + 
-    		"    columnID      INTEGER  NOT NULL,\r\n" + 
+    		"    customID       INTEGER  NOT NULL,\r\n" + 
+    		"    columnID       INTEGER  NOT NULL,\r\n" + 
+    		"    encryptedData  BLOB 	 NOT NULL,\r\n" + 
     		"    PRIMARY KEY (\r\n" + 
-    		"        dataID\r\n" + 
+    		"        customID,\r\n" + 
+    		"		 columnID\r\n" +
     		"    ),\r\n" + 
+    		"    FOREIGN KEY (\r\n" + 
+    		"        customID\r\n" + 
+    		"    )\r\n" + 
+    		"    REFERENCES Customs (customID) \r\n" + 
     		"    FOREIGN KEY (\r\n" + 
     		"        columnID\r\n" + 
     		"    )\r\n" + 
