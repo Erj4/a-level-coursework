@@ -29,6 +29,7 @@ public abstract class SuperController extends AnchorPane {
 
 	@FXML
 	public void showMenu(MouseEvent ae){
+		if(sideMenuPane.isVisible()) return;
 		Timeline timeline = new Timeline();
 		timeline.getKeyFrames().addAll(
 				new KeyFrame(Duration.ZERO, new KeyValue(sideMenuPane.translateXProperty(), -sideMenuPane.getWidth())),
@@ -43,6 +44,7 @@ public abstract class SuperController extends AnchorPane {
 	}
 	@FXML
 	public void hideMenu(){
+		if(!sideMenuPane.isVisible()) return;
 		Timeline timeline = new Timeline();
 		timeline.getKeyFrames().addAll(
 				new KeyFrame(Duration.ZERO, new KeyValue(sideMenuPane.translateXProperty(), 0)),
