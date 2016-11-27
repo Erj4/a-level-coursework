@@ -213,5 +213,43 @@ public class DatabaseConnection {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-
+	
+	public void populate(){
+		try {
+			PreparedStatement templateStatement = newStatement("SELECT templateID, encryptedTemplateName, iv from Templates where user=?");
+			templateStatement.setString(1, username);
+			ResultSet templateResults = runQuery(templateStatement);
+			ArrayList<Template> templates = new ArrayList<Template>();
+			Template.setAllTemplates(templates);
+			while(templateResults.next()){
+				Template newTemplate = new Template(templateResults.getInt("templateID"), templateResults.getBytes("encryptedTemplateName"), templateResults.getBytes("iv"));
+				templates.add(newTemplate);
+				
+				PreparedStatement customStatement = newStatement("SELECT customID, encryptedCustomName, iv from Templates where templateID=?");
+				customStatement.setInt(1, newTemplate.getID());
+				ResultSet customResults = runQuery(customStatement);
+				ArrayList<Custom> customs = new ArrayList<Custom>();
+				Custom.setAllCustoms(customs);
+				while(customResults.next()){
+					Custom newCustom = new Custom(customResults.getInt("customID"), newTemplate, customResults.getBytes("encryptedCustomName"), customResults.getBytes("iv"));
+					customs.add(newCustom);
+				}
+				
+				PreparedStatement columnStatement = newStatement("SELECT columnID, encryptedColumnName, iv from Columns where templateID=?");
+				columnStatement.setInt(1, newTemplate.getID());
+				ResultSet columnResults = runQuery(columnStatement);
+				ArrayList<CustomColumn> columns = new ArrayList<CustomColumn>();
+				CustomColumn.setAllColumns(columns);
+				while(columnResults.next()){
+					CustomColumn newColumn = new CustomColumn(columnResults.getInt("columnID"), newTemplate, customResults.getBytes("encryptedColumnName"), customResults.getBytes("iv"));
+					columns.add(newColumn);
+				}
+				
+				//TODO other DataClasses
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }
