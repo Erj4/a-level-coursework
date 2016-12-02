@@ -46,7 +46,7 @@ public class LoginController extends VBox{
 			e.printStackTrace();
 		}
 		if(!resultFound) {
-			System.out.print("User not found");
+			System.out.println("User not found");
 			return;
 		}
 		if (passwordIsCorrect(passwordField.getText(), salt, shPassword))

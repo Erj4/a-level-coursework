@@ -9,6 +9,7 @@ public class Custom {
 	private final int ID;
 	private Template template;
 	private String name;
+	private ArrayList<Wallet> wallets = new ArrayList<Wallet>();
 	
 	public Custom(int ID, Template template, byte[] encryptedName, byte[] iv){
 		this.ID=ID;
@@ -42,5 +43,21 @@ public class Custom {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public ArrayList<Wallet> getWallets(){
+		return wallets;
+	}
+	
+	public void addWallet(Wallet wallet){
+		wallets.add(wallet);
+	}
+	
+	public boolean removeWallet(Wallet wallet){
+		if (wallets.contains(wallet)){
+			wallets.remove(wallet);
+			return true;
+		}
+		else return false;
 	}
 }

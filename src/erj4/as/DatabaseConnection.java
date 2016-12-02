@@ -16,112 +16,77 @@ public class DatabaseConnection {
 	private String[] dbCreationStatement = {
 			"PRAGMA foreign_keys = off;\r\n",
 			"BEGIN TRANSACTION;\r\n",
-			"CREATE TABLE IF NOT EXISTS UserSettings (\r\n" + 
-					"    username CHAR NOT NULL,\r\n" + 
-					"    PRIMARY KEY (\r\n" + 
-					"        username\r\n" + 
-					"    ),\r\n" + 
-					"    FOREIGN KEY (\r\n" + 
-					"        username\r\n" + 
-					"    )\r\n" + 
-					"    REFERENCES Users (username) \r\n" + 
-					");",
-					"CREATE TABLE IF NOT EXISTS Users (\r\n" + 
-							"    username CHAR      NOT NULL,\r\n" + 
-							"    hsKey    BLOB		NOT NULL,\r\n" + 
-							"    salt     BLOB		NOT NULL,\r\n" + 
-							"    PRIMARY KEY (\r\n" + 
-							"        username\r\n" + 
-							"    )\r\n" + 
-							");",
-							"CREATE TABLE IF NOT EXISTS Wallets (\r\n" + 
-									"    walletID            INTEGER NOT NULL,\r\n" + 
-									"    encryptedWalletName BLOB 	 NOT NULL,\r\n" + 
-									"    username            CHAR	 NOT NULL,\r\n" + 
-									"    iv		             BLOB	 NOT NULL,\r\n" + 
-									"    PRIMARY KEY (\r\n" + 
-									"        walletID\r\n" + 
-									"    ),\r\n" + 
-									"    FOREIGN KEY (\r\n" + 
-									"        username\r\n" + 
-									"    )\r\n" + 
-									"    REFERENCES Users (username) \r\n" + 
-									");",
-									"CREATE TABLE IF NOT EXISTS Templates (\r\n" + 
-											"    templateID            INTEGER NOT NULL,\r\n" + 
-											"    encryptedTemplateName BLOB	   NOT NULL,\r\n" + 
-											"    owner				   CHAR    NOT NULL,\r\n" + 
-											"    iv		           	   BLOB	   NOT NULL,\r\n" + 
-											"    PRIMARY KEY (\r\n" + 
-											"        templateID\r\n" + 
-											"    ),\r\n" + 
-											"    FOREIGN KEY (\r\n" + 
-											"        owner \r\n" + 
-											"    )\r\n" + 
-											"    REFERENCES Users (username) \r\n" + 
-											");",
-											"CREATE TABLE IF NOT EXISTS Customs (\r\n" + 
-													"    customID      			INTEGER NOT NULL,\r\n" + 
-													"    templateID	   			INTEGER NOT NULL,\r\n" + 
-													"    encryptedCustomName 	BLOB	NOT NULL,\r\n" + 
-													"    iv		       			BLOB	NOT NULL,\r\n" + 
-													"    PRIMARY KEY (\r\n" + 
-													"        customID\r\n" + 
-													"    ),\r\n" + 
-													"    FOREIGN KEY (\r\n" + 
-													"        templateID\r\n" + 
-													"    )\r\n" + 
-													"    REFERENCES Templates (templateID) \r\n" + 
-													");",
-													"CREATE TABLE IF NOT EXISTS CustomColumns (\r\n" + 
-															"    columnID			    INTEGER     NOT NULL,\r\n" + 
-															"    encryptedColumnName    BLOB		NOT NULL,\r\n" + 
-															"    templateID             INTEGER     NOT NULL,\r\n" + 
-															"    iv		             	BLOB		NOT NULL,\r\n" + 
-															"    PRIMARY KEY (\r\n" + 
-															"        templateID\r\n" + 
-															"    ),\r\n" + 
-															"    FOREIGN KEY (\r\n" + 
-															"        templateID\r\n" + 
-															"    )\r\n" + 
-															"    REFERENCES Templates (templateID) \r\n" + 
-															");",
-															"CREATE TABLE IF NOT EXISTS CustomInWallet (\r\n" + 
-																	"    customID INTEGER NOT NULL,\r\n" + 
-																	"    walletID INTEGER NOT NULL,\r\n" + 
-																	"    PRIMARY KEY (\r\n" + 
-																	"        customID,\r\n" + 
-																	"        walletID\r\n" + 
-																	"    ),\r\n" + 
-																	"    FOREIGN KEY (\r\n" + 
-																	"        customID\r\n" + 
-																	"    )\r\n" + 
-																	"    REFERENCES Customs (customID),\r\n" + 
-																	"    FOREIGN KEY (\r\n" + 
-																	"        walletID\r\n" + 
-																	"    )\r\n" + 
-																	"    REFERENCES Wallets (walletID) \r\n" + 
-																	");",
-																	"CREATE TABLE IF NOT EXISTS CustomData (\r\n" + 
-																			"    customID       INTEGER  NOT NULL,\r\n" + 
-																			"    columnID       INTEGER  NOT NULL,\r\n" + 
-																			"    encryptedData  BLOB 	 NOT NULL,\r\n" + 
-																			"    iv		        BLOB	 NOT NULL,\r\n" + 
-																			"    PRIMARY KEY (\r\n" + 
-																			"        customID,\r\n" + 
-																			"		 columnID\r\n" +
-																			"    ),\r\n" + 
-																			"    FOREIGN KEY (\r\n" + 
-																			"        customID\r\n" + 
-																			"    )\r\n" + 
-																			"    REFERENCES Customs (customID) \r\n" + 
-																			"    FOREIGN KEY (\r\n" + 
-																			"        columnID\r\n" + 
-																			"    )\r\n" + 
-																			"    REFERENCES CustomColumns (columnID) \r\n" + 
-																			");",
-																			"COMMIT TRANSACTION;\r\n",
-	"PRAGMA foreign_keys = on;\r\n"};
+			"CREATE TABLE IF NOT EXISTS UserSettings (\r\n"
+					+ "    username CHAR NOT NULL,\r\n"
+					+ "    PRIMARY KEY (\r\n" + "        username\r\n"
+					+ "    ),\r\n" + "    FOREIGN KEY (\r\n"
+					+ "        username\r\n" + "    )\r\n"
+					+ "    REFERENCES Users (username) \r\n" + ");",
+			"CREATE TABLE IF NOT EXISTS Users (\r\n"
+					+ "    username CHAR      NOT NULL,\r\n"
+					+ "    hsKey    BLOB		NOT NULL,\r\n"
+					+ "    salt     BLOB		NOT NULL,\r\n"
+					+ "    PRIMARY KEY (\r\n" + "        username\r\n"
+					+ "    )\r\n" + ");",
+			"CREATE TABLE IF NOT EXISTS Wallets (\r\n"
+					+ "    walletID            INTEGER NOT NULL,\r\n"
+					+ "    encryptedWalletName BLOB 	 NOT NULL,\r\n"
+					+ "    username            CHAR	 NOT NULL,\r\n"
+					+ "    iv		             BLOB	 NOT NULL,\r\n"
+					+ "    PRIMARY KEY (\r\n" + "        walletID\r\n"
+					+ "    ),\r\n" + "    FOREIGN KEY (\r\n"
+					+ "        username\r\n" + "    )\r\n"
+					+ "    REFERENCES Users (username) \r\n" + ");",
+			"CREATE TABLE IF NOT EXISTS Templates (\r\n"
+					+ "    templateID            INTEGER NOT NULL,\r\n"
+					+ "    encryptedTemplateName BLOB	   NOT NULL,\r\n"
+					+ "    owner				   CHAR    NOT NULL,\r\n"
+					+ "    iv		           	   BLOB	   NOT NULL,\r\n"
+					+ "    PRIMARY KEY (\r\n" + "        templateID\r\n"
+					+ "    ),\r\n" + "    FOREIGN KEY (\r\n"
+					+ "        owner \r\n" + "    )\r\n"
+					+ "    REFERENCES Users (username) \r\n" + ");",
+			"CREATE TABLE IF NOT EXISTS Customs (\r\n"
+					+ "    customID      			INTEGER NOT NULL,\r\n"
+					+ "    templateID	   			INTEGER NOT NULL,\r\n"
+					+ "    encryptedCustomName 	BLOB	NOT NULL,\r\n"
+					+ "    iv		       			BLOB	NOT NULL,\r\n"
+					+ "    PRIMARY KEY (\r\n" + "        customID\r\n"
+					+ "    ),\r\n" + "    FOREIGN KEY (\r\n"
+					+ "        templateID\r\n" + "    )\r\n"
+					+ "    REFERENCES Templates (templateID) \r\n" + ");",
+			"CREATE TABLE IF NOT EXISTS CustomColumns (\r\n"
+					+ "    columnID			    INTEGER     NOT NULL,\r\n"
+					+ "    encryptedColumnName    BLOB		NOT NULL,\r\n"
+					+ "    templateID             INTEGER     NOT NULL,\r\n"
+					+ "    iv		             	BLOB		NOT NULL,\r\n"
+					+ "    PRIMARY KEY (\r\n" + "        templateID\r\n"
+					+ "    ),\r\n" + "    FOREIGN KEY (\r\n"
+					+ "        templateID\r\n" + "    )\r\n"
+					+ "    REFERENCES Templates (templateID) \r\n" + ");",
+			"CREATE TABLE IF NOT EXISTS CustomInWallet (\r\n"
+					+ "    customID INTEGER NOT NULL,\r\n"
+					+ "    walletID INTEGER NOT NULL,\r\n"
+					+ "    PRIMARY KEY (\r\n" + "        customID,\r\n"
+					+ "        walletID\r\n" + "    ),\r\n"
+					+ "    FOREIGN KEY (\r\n" + "        customID\r\n"
+					+ "    )\r\n" + "    REFERENCES Customs (customID),\r\n"
+					+ "    FOREIGN KEY (\r\n" + "        walletID\r\n"
+					+ "    )\r\n" + "    REFERENCES Wallets (walletID) \r\n"
+					+ ");",
+			"CREATE TABLE IF NOT EXISTS CustomData (\r\n"
+					+ "    customID       INTEGER  NOT NULL,\r\n"
+					+ "    columnID       INTEGER  NOT NULL,\r\n"
+					+ "    encryptedData  BLOB 	 NOT NULL,\r\n"
+					+ "    iv		        BLOB	 NOT NULL,\r\n"
+					+ "    PRIMARY KEY (\r\n" + "        customID,\r\n"
+					+ "		 columnID\r\n" + "    ),\r\n"
+					+ "    FOREIGN KEY (\r\n" + "        customID\r\n"
+					+ "    )\r\n" + "    REFERENCES Customs (customID) \r\n"
+					+ "    FOREIGN KEY (\r\n" + "        columnID\r\n"
+					+ "    )\r\n"
+					+ "    REFERENCES CustomColumns (columnID) \r\n" + ");",
+			"COMMIT TRANSACTION;\r\n", "PRAGMA foreign_keys = on;\r\n" };
 	private String username = null;
 
 	/* This method is the constructor. When a new DatabaseConnection object is created a connection
@@ -213,7 +178,7 @@ public class DatabaseConnection {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	
+
 	public void populate(){
 		try {
 			PreparedStatement templateStatement = newStatement("SELECT templateID, encryptedTemplateName, iv from Templates where user=?");
@@ -224,8 +189,8 @@ public class DatabaseConnection {
 			while(templateResults.next()){
 				Template newTemplate = new Template(templateResults.getInt("templateID"), templateResults.getBytes("encryptedTemplateName"), templateResults.getBytes("iv"));
 				templates.add(newTemplate);
-				
-				PreparedStatement customStatement = newStatement("SELECT customID, encryptedCustomName, iv from Templates where templateID=?");
+
+				PreparedStatement customStatement = newStatement("SELECT customID, encryptedCustomName, iv from Customs where templateID=?");
 				customStatement.setInt(1, newTemplate.getID());
 				ResultSet customResults = runQuery(customStatement);
 				ArrayList<Custom> customs = new ArrayList<Custom>();
@@ -233,19 +198,32 @@ public class DatabaseConnection {
 				while(customResults.next()){
 					Custom newCustom = new Custom(customResults.getInt("customID"), newTemplate, customResults.getBytes("encryptedCustomName"), customResults.getBytes("iv"));
 					customs.add(newCustom);
+
+					PreparedStatement columnStatement = newStatement("SELECT columnID, encryptedColumnName, iv from Columns where templateID=?");
+					columnStatement.setInt(1, newTemplate.getID());
+					ResultSet columnResults = runQuery(columnStatement);
+					ArrayList<CustomColumn> columns = new ArrayList<CustomColumn>();
+					CustomColumn.setAllColumns(columns);
+					while(columnResults.next()){
+						CustomColumn newColumn = new CustomColumn(columnResults.getInt("columnID"), newTemplate, columnResults.getBytes("encryptedColumnName"), columnResults.getBytes("iv"));
+						columns.add(newColumn);
+						
+						PreparedStatement dataStatement = newStatement("SELECT customID, columnID, encryptedData, iv from CustomData where columnID=? and customID=?");
+						dataStatement.setInt(1, newColumn.getID());
+						dataStatement.setInt(2, newCustom.getID());
+						ResultSet dataResults = runQuery(dataStatement);
+						ArrayList<CustomData> data = new ArrayList<CustomData>();
+						CustomData.setAllValues(data);
+						while(dataResults.next()){
+							CustomData newData = new CustomData(newCustom, newColumn, dataResults.getBytes("encryptedData"), dataResults.getBytes("iv"));
+							data.add(newData);
+						}
+						
+						PreparedStatement wLinkStatement = newStatement("SELECT walletID from CustomInWallet where customID=?");
+						wLinkStatement.setInt(1, newCustom.getID());
+						//TODO complete walletLink
+					}
 				}
-				
-				PreparedStatement columnStatement = newStatement("SELECT columnID, encryptedColumnName, iv from Columns where templateID=?");
-				columnStatement.setInt(1, newTemplate.getID());
-				ResultSet columnResults = runQuery(columnStatement);
-				ArrayList<CustomColumn> columns = new ArrayList<CustomColumn>();
-				CustomColumn.setAllColumns(columns);
-				while(columnResults.next()){
-					CustomColumn newColumn = new CustomColumn(columnResults.getInt("columnID"), newTemplate, customResults.getBytes("encryptedColumnName"), customResults.getBytes("iv"));
-					columns.add(newColumn);
-				}
-				
-				//TODO other DataClasses
 			}
 		}
 		catch (SQLException e) {
