@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 
 <StackPane styleClass="bkgd" stylesheets="@index.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="erj4.as.IndexController">
    <children>
@@ -57,6 +58,20 @@
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </padding>
             </VBox>
+         </children>
+      </AnchorPane>
+      <AnchorPane StackPane.alignment="CENTER">
+         <children>
+            <AnchorPane AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <children>
+                  <Circle fill="#e040fb" focusTraversable="true" radius="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="fab" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="30.0" />
+                  <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0">
+                     <image>
+                        <Image url="@ic_add_white_48dp_2x.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
          </children>
       </AnchorPane>
    </children>

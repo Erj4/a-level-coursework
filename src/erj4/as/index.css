@@ -1,7 +1,5 @@
 .bkgd {
     -fx-background-color: gray;
-    -fx-border-color: lightgray;
-    -fx-border-width: 1 0 0 0;
 }
 .main {
     -fx-background-color: white;
@@ -9,7 +7,7 @@
 }
 .menuBar {
     -fx-effect: dropshadow(three-pass-box, lightgray, 5, 0.0, 0, 5);
-    -fx-background-color: white;
+    -fx-background-color: #9FA8DA; //From indigo palette (white);
 }
 .sideMenu {
     -fx-effect: dropshadow(three-pass-box, gray, 5, 0.0, 5, 0);
@@ -21,6 +19,9 @@
 	-fx-padding: 0.5em 0.5em 0.5em 0.1em;
 	-fx-border-color: blue;
 	-fx-border-width: 0 0 0 0;
-	-fx-prompt-text-fill: derive(#f5f5f5, 50.0%);
+	-fx-prompt-text-fill: #aaaaaa;
 	-fx-highlight-fill: rgb(94.0, 203.0, 234.0);
+}
+.fab {
+	-fx-effect:dropshadow(three-pass-box, lightgray, 5, 0.0, 2, 5);
 }
