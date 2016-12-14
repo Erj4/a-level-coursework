@@ -181,6 +181,16 @@ public class DatabaseConnection {
 
 	public void populate(){
 		try {
+			PreparedStatement walletStatement = newStatement("SELECT walletID, encryptedWalletName, iv FROM wallet WHERE user=?");
+			walletStatement.setString(1, username);
+			ResultSet walletResults = runQuery(walletStatement);
+			ArrayList<Wallet> wallets = new ArrayList<Wallet>();
+			Wallet.setAllWallets(wallets);
+			while(walletResults.next()){
+				Wallet newWallet = new Wallet(walletResults.getInt("walletID"), walletResults.getBytes("encryptedWalletName"), walletResults.getBytes("iv"));
+				wallets.add(newWallet);
+			}
+			
 			PreparedStatement templateStatement = newStatement("SELECT templateID, encryptedTemplateName, iv from Templates where user=?");
 			templateStatement.setString(1, username);
 			ResultSet templateResults = runQuery(templateStatement);
@@ -218,10 +228,18 @@ public class DatabaseConnection {
 							CustomData newData = new CustomData(newCustom, newColumn, dataResults.getBytes("encryptedData"), dataResults.getBytes("iv"));
 							data.add(newData);
 						}
+					}
 						
-						PreparedStatement wLinkStatement = newStatement("SELECT walletID from CustomInWallet where customID=?");
-						wLinkStatement.setInt(1, newCustom.getID());
-						//TODO complete walletLink
+					PreparedStatement walletLinkStatement = newStatement("SELECT Wallet.walletID from CustomInWallet INNER JOIN Wallet ON Wallet.walletID=CustomInWallet.walletID where CustomInWallet.customID=?");
+					walletLinkStatement.setInt(1, newCustom.getID());
+					ResultSet walletLinkResults = runQuery(walletLinkStatement);
+					while(walletLinkResults.next()){
+						for(Wallet wallet:wallets){
+							if(wallet.getID()==walletLinkResults.getInt("Wallet.walletID")){
+								newCustom.addToWallet(wallet);
+								break;
+							}
+						}
 					}
 				}
 			}

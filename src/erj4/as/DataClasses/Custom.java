@@ -49,7 +49,7 @@ public class Custom {
 		return wallets;
 	}
 	
-	public void addWallet(Wallet wallet){
+	public void addToWallet(Wallet wallet){
 		wallets.add(wallet);
 	}
 	
