@@ -11,12 +11,12 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 public abstract class SuperController extends AnchorPane {
 	@FXML private AnchorPane sideMenuPane;
-	@FXML private VBox mainPane;
+	@FXML private Pane dimmer;
 
 	public void initialize(){ // Called by FXMLLoader *after* @fxml annotation injection
 		sideMenuPane.widthProperty().addListener(new ChangeListener<Number>(){
@@ -35,11 +35,13 @@ public abstract class SuperController extends AnchorPane {
 				new KeyFrame(Duration.ZERO, new KeyValue(sideMenuPane.translateXProperty(), -sideMenuPane.getWidth())),
 				new KeyFrame(new Duration(150), new KeyValue(sideMenuPane.translateXProperty(), 0, Interpolator.EASE_OUT)), //200 for entrance animations
 
-				new KeyFrame(Duration.ZERO, new KeyValue(mainPane.opacityProperty(), 1.0)),
-				new KeyFrame(new Duration(150), new KeyValue(mainPane.opacityProperty(), 0.5))
+				new KeyFrame(Duration.ZERO, new KeyValue(dimmer.opacityProperty(), 0.0)),
+				new KeyFrame(new Duration(150), new KeyValue(dimmer.opacityProperty(), 0.5))
 				);
 		timeline.play();
 		sideMenuPane.setVisible(true);
+		sideMenuPane.requestFocus();
+		dimmer.setVisible(true);
 		ae.consume();
 	}
 	@FXML
@@ -50,12 +52,13 @@ public abstract class SuperController extends AnchorPane {
 				new KeyFrame(Duration.ZERO, new KeyValue(sideMenuPane.translateXProperty(), 0)),
 				new KeyFrame(new Duration(150), new KeyValue(sideMenuPane.translateXProperty(), -sideMenuPane.getWidth(), Interpolator.EASE_BOTH)), //150ms for exit animations
 				
-				new KeyFrame(Duration.ZERO, new KeyValue(mainPane.opacityProperty(), 0.5)),
-				new KeyFrame(new Duration(150), new KeyValue(mainPane.opacityProperty(), 1.0))
+				new KeyFrame(Duration.ZERO, new KeyValue(dimmer.opacityProperty(), 0.5)),
+				new KeyFrame(new Duration(150), new KeyValue(dimmer.opacityProperty(), 0.0))
 				);
 		timeline.onFinishedProperty().set(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent ae){
 				sideMenuPane.setVisible(false);
+				dimmer.setVisible(false);
 			}
 		});
 		timeline.play();

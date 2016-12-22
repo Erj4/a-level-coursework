@@ -1,0 +1,30 @@
+TabPane .tab-header-area .tab-header-background {
+    -fx-background-color: #eeeeee;
+}
+TabPane .tab-header-area {
+    -fx-padding: 5 2 0 0;
+}
+TabPane .tab {
+    -fx-background-color: #B83300;
+    -fx-text-fill: white;
+    -fx-background-insets: 0 0 0 4;
+}
+TabPane .tab:selected {
+    -fx-background-color: #FF5722;
+}
+TabPane .tab .tab-label {
+    -fx-text-fill: lightgray;
+}
+TabPane .tab:selected .tab-label {
+    -fx-text-fill: white;
+}
+.nextButton {
+    -fx-background-color: #FF5722;
+    -fx-background-radius: 5;
+    -fx-text-fill: white;
+}
+TabPane AnchorPane {
+    -fx-border-width: 3 1 1 1;
+    -fx-border-color: #FF5722;
+    -fx-border-radius: 0;
+}

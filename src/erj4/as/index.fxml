@@ -19,22 +19,22 @@
 
 <StackPane styleClass="bkgd" stylesheets="@index.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="erj4.as.IndexController">
    <children>
-      <VBox fx:id="mainPane" onMouseClicked="#hideMenu" prefHeight="400.0" prefWidth="600.0" styleClass="main">
+      <VBox fx:id="mainPane" prefHeight="400.0" prefWidth="600.0" styleClass="main">
          <children>
             <StackPane styleClass="menuBar">
                <children>
-                  <HBox alignment="CENTER_LEFT">
+                  <HBox alignment="CENTER_LEFT" spacing="5.0">
                      <children>
                         <ImageView fitHeight="32.0" fitWidth="32.0" onMouseClicked="#showMenu" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
                            <image>
                               <Image url="@1476468584_menu-alt.png" />
                            </image>
                            <HBox.margin>
-                              <Insets right="5.0" />
+                              <Insets />
                            </HBox.margin>
                         </ImageView>
-                        <Pane HBox.hgrow="SOMETIMES" />
-                        <TextField fx:id="searchBox" alignment="CENTER_RIGHT" maxWidth="400.0" prefHeight="36.0" promptText="Search" styleClass="searchBox" HBox.hgrow="ALWAYS">
+                        <Pane maxHeight="0.0" minWidth="0.0" prefHeight="0.0" HBox.hgrow="ALWAYS" />
+                        <TextField fx:id="searchBox" alignment="CENTER_RIGHT" minWidth="0.0" prefHeight="36.0" prefWidth="400.0" promptText="Search" styleClass="searchBox" HBox.hgrow="ALWAYS">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
@@ -51,18 +51,33 @@
             </StackPane>
             <HBox VBox.vgrow="ALWAYS">
                <children>
-                  <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS" />
+                  <SplitPane dividerPositions="0.626" HBox.hgrow="ALWAYS">
+                    <items>
+                        <ListView fx:id="itemsList" prefHeight="200.0" prefWidth="200.0" />
+                        <HBox fx:id="details" prefHeight="100.0" prefWidth="200.0" />
+                    </items>
+                  </SplitPane>
                </children>
+            </HBox>
+            <HBox spacing="2.0">
+               <children>
+                  <Button mnemonicParsing="false" styleClass="actionBarButton" text="ADD NEW" />
+                  <Button mnemonicParsing="false" styleClass="actionBarButton" text="FILTER" />
+               </children>
+               <padding>
+                  <Insets left="2.0" right="2.0" />
+               </padding>
             </HBox>
          </children>
       </VBox>
+      <Pane fx:id="dimmer" focusTraversable="true" onMouseClicked="#hideMenu" styleClass="dimmer" visible="false" />
       <AnchorPane fx:id="sideMenuPane" maxWidth="-Infinity" styleClass="sideMenu" visible="false" StackPane.alignment="TOP_LEFT">
          <children>
             <VBox fillWidth="false" spacing="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Button mnemonicParsing="false" style="-fx-background-color: TRANSPARENT;" text="Button" />
-                  <Button mnemonicParsing="false" style="-fx-background-color: TRANSPARENT;" text="Button" />
-                  <Button mnemonicParsing="false" style="-fx-background-color: TRANSPARENT;" text="Button" />
+                  <Button mnemonicParsing="false" text="Items" />
+                  <Button mnemonicParsing="false" text="Templates" />
+                  <Button mnemonicParsing="false" text="Settings" />
                </children>
                <padding>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />

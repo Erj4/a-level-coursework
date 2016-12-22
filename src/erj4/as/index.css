@@ -1,27 +1,38 @@
 .bkgd {
-    -fx-background-color: gray;
+    -fx-background-color: gray; //legacy
 }
 .main {
     -fx-background-color: white;
-    -fx-opacity: 1; //0.3
 }
 .menuBar {
     -fx-effect: dropshadow(three-pass-box, lightgray, 5, 0.0, 0, 5);
-    -fx-background-color: #9FA8DA; //From indigo palette (white);
+    -fx-background-color: #FF5722; //From dark orange palette
 }
 .sideMenu {
     -fx-effect: dropshadow(three-pass-box, gray, 5, 0.0, 5, 0);
     -fx-background-color: white;
 }
 .searchBox {
-	-fx-background-color: #f5f5f5;
-	-fx-background-radius: 2.0;
-	-fx-padding: 0.5em 0.5em 0.5em 0.1em;
-	-fx-border-color: blue;
-	-fx-border-width: 0 0 0 0;
-	-fx-prompt-text-fill: #aaaaaa;
-	-fx-highlight-fill: rgb(94.0, 203.0, 234.0);
+    -fx-background-color: #f5f5f5;
+    -fx-background-radius: 2.0;
+    -fx-padding: 0.5em 0.5em 0.5em 0.1em;
+    -fx-border-color: blue; //legacy
+    -fx-border-width: 0 0 0 0;
+    -fx-prompt-text-fill: #aaaaaa;
+    -fx-highlight-fill: rgb(94.0, 203.0, 234.0);
 }
 .fab {
-	-fx-effect:dropshadow(three-pass-box, lightgray, 5, 0.0, 2, 5);
+    -fx-effect: dropshadow(three-pass-box, lightgray, 5, 0.0, 2, 5);
+}
+.dimmer {
+    -fx-background-color: gray;
+    -fx-opacity: 0;
+}
+Button {
+    -fx-background-color: TRANSPARENT;
+}
+.actionBarButton {
+    -fx-border-width: 1 1 1 1;
+    -fx-border-color: lightgrey;
+    -fx-border-radius: 5;
 }
