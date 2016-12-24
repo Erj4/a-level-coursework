@@ -62,7 +62,7 @@
             </HBox>
             <HBox spacing="2.0">
                <children>
-                  <Button mnemonicParsing="false" styleClass="actionBarButton" text="ADD NEW" />
+                  <Button mnemonicParsing="false" onAction="#newItem" styleClass="actionBarButton" text="NEW ITEM" />
                   <Button mnemonicParsing="false" styleClass="actionBarButton" text="FILTER" />
                </children>
                <padding>

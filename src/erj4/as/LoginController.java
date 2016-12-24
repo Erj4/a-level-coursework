@@ -72,7 +72,7 @@ public class LoginController extends VBox{
 		//
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(fileName));
 		Stage stage = new Stage();
-		stage.setTitle("Add new item");
+		stage.setTitle("Add new user");
 		try {
 			stage.setScene(new Scene(loader.load()));
 		} catch (IOException e) {
