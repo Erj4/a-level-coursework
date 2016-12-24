@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -17,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
-<StackPane styleClass="bkgd" stylesheets="@index.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="erj4.as.IndexController">
+<StackPane styleClass="bkgd" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="erj4.as.IndexController">
    <children>
       <VBox fx:id="mainPane" prefHeight="400.0" prefWidth="600.0" styleClass="main">
          <children>
@@ -86,4 +87,8 @@
          </children>
       </AnchorPane>
    </children>
+   <stylesheets>
+      <URL value="@index.css" />
+      <URL value="@super.css" />
+   </stylesheets>
 </StackPane>
