@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER_RIGHT" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: lightgrey;" stylesheets="@new_item.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER_RIGHT" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #f0f0f0;" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ScrollPane hbarPolicy="NEVER" style="-fx-background: lightgrey;" styleClass="edge-to-edge" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
+      <ScrollPane hbarPolicy="NEVER" style="-fx-background: #f0f0f0;" styleClass="edge-to-edge" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
          <content>
             <VBox spacing="2.0">
                <children>
@@ -20,7 +21,7 @@
                         <Insets top="5.0" />
                      </VBox.margin>
                   </Label>
-                  <HBox spacing="2.0">
+                  <HBox alignment="CENTER_LEFT" spacing="2.0">
                      <children>
                         <ComboBox fx:id="templateSelector" onAction="#templateSelected" prefWidth="150.0" promptText="Select a template">
                            <opaqueInsets>
@@ -61,4 +62,8 @@
          </VBox.margin>
       </Button>
    </children>
+   <stylesheets>
+      <URL value="@new_item.css" />
+      <URL value="@super.css" />
+   </stylesheets>
 </VBox>
