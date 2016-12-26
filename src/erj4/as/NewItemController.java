@@ -33,15 +33,6 @@ public class NewItemController extends VBox implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources){
 		templateSelector.setItems(Template.getAllTemplates());
-		
-		//DEBUG
-		byte[] iv = Main.randomBytes(16);
-		new Template(1, Main.encrypter.encrypt("First", iv), iv);
-		new Template(2, Main.encrypter.encrypt("Second", iv), iv);
-		new Template(3, Main.encrypter.encrypt("Third", iv), iv);
-		//DEBUG
-		
-		
 	}
 
 	@FXML
