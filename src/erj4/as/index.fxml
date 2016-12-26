@@ -60,7 +60,7 @@
                   </SplitPane>
                </children>
             </HBox>
-            <HBox spacing="2.0">
+            <HBox spacing="2.0" styleClass="actionBar">
                <children>
                   <Button mnemonicParsing="false" onAction="#newItem" styleClass="actionBarButton" text="NEW ITEM" />
                   <Button mnemonicParsing="false" styleClass="actionBarButton" text="FILTER" />
@@ -74,7 +74,7 @@
       <Pane fx:id="dimmer" focusTraversable="true" onMouseClicked="#hideMenu" styleClass="dimmer" visible="false" />
       <AnchorPane fx:id="sideMenuPane" maxWidth="-Infinity" styleClass="sideMenu" visible="false" StackPane.alignment="TOP_LEFT">
          <children>
-            <VBox fillWidth="false" spacing="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <VBox fillWidth="false" spacing="1.0" styleClass="sideMenu" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <Button mnemonicParsing="false" text="Items" />
                   <Button mnemonicParsing="false" text="Templates" />

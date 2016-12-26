@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import erj4.as.DataClasses.Column;
 import erj4.as.DataClasses.Template;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +14,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -61,6 +65,11 @@ public class NewItemController extends VBox implements Initializable {
 	@FXML
 	void templateSelected() {
 		System.out.println("Method run");
+		inputContainer.getChildren().clear();
+		for(Column column:templateSelector.getSelectionModel().getSelectedItem().getColumns()){
+			HBox field = new HBox(2, (Node) new Label(column.getName()+": "), column.isPassword()?(Node) new PasswordField():(Node) new TextField());
+			inputContainer.getChildren().add(field);
+		}
 	}
 
 

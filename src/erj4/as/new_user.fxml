@@ -6,7 +6,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="erj4.as.NewUserController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@super.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="erj4.as.NewUserController">
    <children>
       <GridPane>
          <columnConstraints>
@@ -65,7 +65,7 @@
             </PasswordField>
             <HBox GridPane.columnIndex="2" GridPane.rowIndex="3">
                <children>
-                  <Button mnemonicParsing="false" onAction="#newUser" text="Create">
+                  <Button defaultButton="true" mnemonicParsing="false" onAction="#newUser" text="Create">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>

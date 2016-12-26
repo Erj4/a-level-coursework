@@ -56,10 +56,11 @@ public class DatabaseConnection {
 					+ "        templateID\r\n" + "    )\r\n"
 					+ "    REFERENCES Templates (templateID) \r\n" + ");",
 			"CREATE TABLE IF NOT EXISTS CustomColumns (\r\n"
-					+ "    columnID			    INTEGER     NOT NULL,\r\n"
-					+ "    encryptedColumnName    BLOB		NOT NULL,\r\n"
-					+ "    templateID             INTEGER     NOT NULL,\r\n"
+					+ "    columnID					INTEGER     NOT NULL,\r\n"
+					+ "    encryptedColumnName		BLOB		NOT NULL,\r\n"
+					+ "    templateID				INTEGER     NOT NULL,\r\n"
 					+ "    iv		             	BLOB		NOT NULL,\r\n"
+					+ "    isPassword             	BOOL		NOT NULL,\r\n"
 					+ "    PRIMARY KEY (\r\n" + "        templateID\r\n"
 					+ "    ),\r\n" + "    FOREIGN KEY (\r\n"
 					+ "        templateID\r\n" + "    )\r\n"
@@ -238,30 +239,30 @@ public class DatabaseConnection {
 	}
 
 	private void populateColumnsForCustom(Custom custom) throws SQLException {
-		PreparedStatement columnStatement = newStatement("SELECT columnID, encryptedColumnName, iv from Columns where templateID=?");
+		PreparedStatement columnStatement = newStatement("SELECT columnID, encryptedColumnName, iv, isBoolean from Columns where templateID=?");
 		columnStatement.setInt(1, custom.getTemplate().getID());
 		ResultSet columnResults = runQuery(columnStatement);
 		while(columnResults.next()){
-			CustomColumn newColumn = new CustomColumn(columnResults.getInt("columnID"), custom.getTemplate(), columnResults.getBytes("encryptedColumnName"), columnResults.getBytes("iv"));
+			Column newColumn = new Column(columnResults.getInt("columnID"), custom.getTemplate(), columnResults.getBytes("encryptedColumnName"), columnResults.getBytes("iv"), columnResults.getBoolean("isPassword"));
 
 			populateDataForColumnOfCustom(newColumn, custom);
 		}
 	}
 
-	private void populateDataForColumnOfCustom(CustomColumn column, Custom custom) throws SQLException {
+	private void populateDataForColumnOfCustom(Column column, Custom custom) throws SQLException {
 		PreparedStatement dataStatement = newStatement("SELECT customID, columnID, encryptedData, iv from CustomData where columnID=? and customID=?");
 		dataStatement.setInt(1, column.getID());
 		dataStatement.setInt(2, custom.getID());
 		ResultSet dataResults = runQuery(dataStatement);
 		while(dataResults.next()){
-			new CustomData(custom, column, dataResults.getBytes("encryptedData"), dataResults.getBytes("iv"));
+			new Data(custom, column, dataResults.getBytes("encryptedData"), dataResults.getBytes("iv"));
 		}
 	}
 
 	private void clearJavaData(){
 		Custom.setAllCustoms(new ArrayList<>());
-		CustomColumn.setAllColumns(new ArrayList<>());
-		CustomData.setAllValues(new ArrayList<>());
+		Column.setAllColumns(new ArrayList<>());
+		Data.setAllValues(new ArrayList<>());
 		Template.setAllTemplates(new ArrayList<>());
 		Wallet.setAllWallets(new ArrayList<>());
 	}

@@ -104,7 +104,7 @@ public class LoginController extends VBox{
 		Scene scene = null;
 		try {
 			root = FXMLLoader.load(getClass().getResource(fileName));
-			scene = new Scene(root, 300, 275);
+			scene = new Scene(root, 800, 450);
 		} catch (Exception e) {
 			Main.fatalError(e, "An error occured while trying to load the resource "+fileName+", so the program must exit immediately");
 		}

@@ -8,7 +8,6 @@ public class Pbkdf2Test {
 
 	public static void main(String[] args) {
 		long time=0;
-		int iFinal=0;
 		for(int i=1000;time<1000;i+=1000){
 			long start=System.currentTimeMillis();
 			System.out.println(i+" iterations produced "+new String(PBKDF2(i))+" in "+(System.currentTimeMillis()-start)+"ms");

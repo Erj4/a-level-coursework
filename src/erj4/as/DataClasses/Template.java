@@ -8,6 +8,7 @@ import erj4.as.Main;
 
 public class Template {
 	private static ObservableList<Template> allTemplates = FXCollections.observableArrayList();
+	private static ObservableList<Column> columns = FXCollections.observableArrayList();
 	private final int ID;
 	private String name;
 	
@@ -40,5 +41,13 @@ public class Template {
 	@Override
 	public String toString(){
 		return name;
+	}
+
+	public void addColumn(Column c) {
+		columns.add(c);
+	}
+	
+	public ObservableList<Column> getColumns(){
+		return columns;
 	}
 }

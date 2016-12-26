@@ -11,11 +11,7 @@ import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom; // For salting and IVs (new ..., nextBytes(outArray)
-
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -89,22 +85,6 @@ public class Main extends Application {
 
 	public static byte[] encrypterHash(String password, byte[] salt) {
 		return PBKDF2(password, salt, 10000, 128);
-	}
-
-	private static byte[] SHA512(String password, byte[] salt) {
-		byte[] passwordBytes = null;
-		try {
-			passwordBytes = password.getBytes("UTF-8");
-		} catch(UnsupportedEncodingException e){e.printStackTrace();}
-		byte[] saltedPassword = new byte[salt.length+passwordBytes.length];
-		System.arraycopy(salt, 0, saltedPassword, 0, salt.length);
-		System.arraycopy(passwordBytes, 0, saltedPassword, salt.length, passwordBytes.length);
-		MessageDigest md = null;
-		try {
-			md = MessageDigest.getInstance("SHA-512");
-		} catch(NoSuchAlgorithmException e){e.printStackTrace();}
-		md.update(saltedPassword);
-		return md.digest();
 	}
 
 	//SRC adapted from https://www.owasp.org/index.php/Hashing_Java

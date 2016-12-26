@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class CustomData {
-	private static ObservableList<CustomData> allValues = FXCollections.observableArrayList();
+public class Data {
+	private static ObservableList<Data> allValues = FXCollections.observableArrayList();
 	private Custom custom;
-	private CustomColumn column;
+	private Column column;
 	private byte[] encryptedData;
 	private byte[] iv;
 	
-	public CustomData(Custom custom, CustomColumn column, byte[] encryptedData, byte[] iv) {
+	public Data(Custom custom, Column column, byte[] encryptedData, byte[] iv) {
 		this.setCustom(custom);
 		this.setColumn(column);
 		this.setEncryptedData(encryptedData);
@@ -20,12 +20,12 @@ public class CustomData {
 		allValues.add(this);
 	}
 
-	public static ObservableList<CustomData> getAllValues() {
+	public static ObservableList<Data> getAllValues() {
 		return allValues;
 	}
 
-	public static void setAllValues(ArrayList<CustomData> allValues) {
-		CustomData.allValues.setAll(allValues);
+	public static void setAllValues(ArrayList<Data> allValues) {
+		Data.allValues.setAll(allValues);
 	}
 
 	public Custom getCustom() {
@@ -36,11 +36,11 @@ public class CustomData {
 		this.custom = custom;
 	}
 
-	public CustomColumn getColumn() {
+	public Column getColumn() {
 		return column;
 	}
 
-	public void setColumn(CustomColumn column) {
+	public void setColumn(Column column) {
 		this.column = column;
 	}
 
