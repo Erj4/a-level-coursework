@@ -29,12 +29,11 @@ public class Encrypter {
 		}
 	}
 	
-	public byte[] encrypt(String data, String iv){
+	public byte[] encrypt(String data, byte[] iv){
 		byte[] byteData = data.getBytes();
-		byte[] byteIv = iv.getBytes();
 		// SRC stackoverflow.com/questions/1205135/how-to-encrypt-string-in-java
 		SecretKeySpec keySpec = new SecretKeySpec(key, cipherType);
-		IvParameterSpec ivSpec = new IvParameterSpec(byteIv);
+		IvParameterSpec ivSpec = new IvParameterSpec(iv);
 		try {
 			cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
 		} catch (InvalidKeyException | InvalidAlgorithmParameterException e) {Main.fatalError(e, e.getMessage());} // Should not occur
