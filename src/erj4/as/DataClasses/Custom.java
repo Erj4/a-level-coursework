@@ -1,11 +1,13 @@
 package erj4.as.DataClasses;
 
 import java.util.ArrayList;
+
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import erj4.as.Main;
 
 public class Custom {
-	private static ObservableList<Custom> allCustoms;
+	private static ObservableList<Custom> allCustoms = FXCollections.observableArrayList();
 	private final int ID;
 	private Template template;
 	private String name;
@@ -60,5 +62,10 @@ public class Custom {
 			return true;
 		}
 		else return false;
+	}
+	
+	@Override
+	public String toString(){
+		return name;
 	}
 }

@@ -2,11 +2,12 @@ package erj4.as.DataClasses;
 
 import java.util.ArrayList;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import erj4.as.Main;
 
 public class CustomColumn {
-	private static ObservableList<CustomColumn> allColumns;
+	private static ObservableList<CustomColumn> allColumns = FXCollections.observableArrayList();
 	private final int ID;
 	private Template template;
 	private String name;
@@ -45,5 +46,10 @@ public class CustomColumn {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	@Override
+	public String toString(){
+		return name;
 	}
 }

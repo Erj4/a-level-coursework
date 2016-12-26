@@ -2,11 +2,12 @@ package erj4.as.DataClasses;
 
 import java.util.ArrayList;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import erj4.as.Main;
 
 public class Wallet {
-	private static ObservableList<Wallet> allWallets;
+	private static ObservableList<Wallet> allWallets = FXCollections.observableArrayList();
 	private final int ID;
 	private String name;
 	
@@ -34,5 +35,10 @@ public class Wallet {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	@Override
+	public String toString(){
+		return name;
 	}
 }

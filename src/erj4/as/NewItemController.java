@@ -1,10 +1,13 @@
 package erj4.as;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import erj4.as.DataClasses.Template;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -14,7 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class NewItemController {
+public class NewItemController extends VBox implements Initializable {
 	@FXML
 	private ComboBox<Template> templateSelector;
 
@@ -26,6 +29,20 @@ public class NewItemController {
 
 	@FXML
 	private Button addItemFromScene;
+	
+	@Override
+	public void initialize(URL location, ResourceBundle resources){
+		templateSelector.setItems(Template.getAllTemplates());
+		
+		//DEBUG
+		byte[] iv = Main.randomBytes(16);
+		new Template(1, Main.encrypter.encrypt("First", iv), iv);
+		new Template(2, Main.encrypter.encrypt("Second", iv), iv);
+		new Template(3, Main.encrypter.encrypt("Third", iv), iv);
+		//DEBUG
+		
+		
+	}
 
 	@FXML
 	void newTemplate() {
@@ -52,7 +69,7 @@ public class NewItemController {
 
 	@FXML
 	void templateSelected() {
-
+		System.out.println("Method run");
 	}
 
 

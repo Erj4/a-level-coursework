@@ -15,7 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class NewUserController extends VBox implements Initializable{
+public class NewUserController extends VBox implements Initializable {
 	private final int MIN_PASSWORD_LENGTH  = 8;
 
 	@FXML private TextField usernameField;
@@ -24,7 +24,7 @@ public class NewUserController extends VBox implements Initializable{
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources){
-		this.setUserData(new String[]{null, null});
+		this.setUserData(new String[]{null, null, null});
 	}
 
 	@FXML
@@ -65,8 +65,9 @@ public class NewUserController extends VBox implements Initializable{
 			failed = true;
 		}
 		if (!failed){
-			createUser(username, password);
-			this.setUserData(new String[]{username, password});
+			try {
+				this.setUserData(new String[]{username, password, new String(createUser(username, password), "UTF-8")});
+			} catch (UnsupportedEncodingException e) {e.printStackTrace();}
 			((Stage)usernameField.getScene().getWindow()).close();
 		}
 		else {
@@ -80,7 +81,7 @@ public class NewUserController extends VBox implements Initializable{
 		((Stage)usernameField.getScene().getWindow()).close();
 	}
 
-	private void createUser(String username, String password) {
+	private byte[] createUser(String username, String password) {
 		PreparedStatement create = Main.db.newStatement("INSERT INTO Users (username, hskey, salt) VALUES (?, ?, ?);");
 		try {
 			create.setString(1, username);
@@ -89,7 +90,9 @@ public class NewUserController extends VBox implements Initializable{
 			create.setBytes(3, salt);
 			create.executeUpdate();
 			verifyInsertion(username, Main.hash(password, salt), salt); // Check data in database is correct
+			return salt;
 		} catch (SQLException e) {e.printStackTrace();}
+		return null;
 	}
 	
 	private void verifyInsertion(String username, byte[] hash, byte[] salt){ // For debugging - checks data in database is same as values in variables

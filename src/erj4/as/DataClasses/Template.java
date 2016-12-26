@@ -2,11 +2,12 @@ package erj4.as.DataClasses;
 
 import java.util.ArrayList;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import erj4.as.Main;
 
 public class Template {
-	private static ObservableList<Template> allTemplates;
+	private static ObservableList<Template> allTemplates = FXCollections.observableArrayList();
 	private final int ID;
 	private String name;
 	
@@ -34,5 +35,10 @@ public class Template {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	@Override
+	public String toString(){
+		return name;
 	}
 }

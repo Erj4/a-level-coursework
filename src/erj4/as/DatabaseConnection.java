@@ -205,7 +205,7 @@ public class DatabaseConnection {
 		ResultSet templateResults = runQuery(templateStatement);
 		while(templateResults.next()){
 			Template newTemplate = new Template(templateResults.getInt("templateID"), templateResults.getBytes("encryptedTemplateName"), templateResults.getBytes("iv"));
-
+			
 			populateCustomsForTemplate(newTemplate);
 		}
 	}
@@ -243,7 +243,7 @@ public class DatabaseConnection {
 		ResultSet columnResults = runQuery(columnStatement);
 		while(columnResults.next()){
 			CustomColumn newColumn = new CustomColumn(columnResults.getInt("columnID"), custom.getTemplate(), columnResults.getBytes("encryptedColumnName"), columnResults.getBytes("iv"));
-			
+
 			populateDataForColumnOfCustom(newColumn, custom);
 		}
 	}

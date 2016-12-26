@@ -15,7 +15,6 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom; // For salting and IVs (new ..., nextBytes(outArray)
-import java.security.spec.InvalidKeySpecException;
 
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
@@ -84,9 +83,12 @@ public class Main extends Application {
 		return bytes;
 	}
 
-	public static byte[] hash(String password, byte[] salt){ // Wrapper for hashing algorithm (SHA-512)
-		//TODO switch to pbkdf2
-		return SHA512(password, salt);
+	public static byte[] hash(String password, byte[] salt) { // Wrapper for hashing algorithm
+		return PBKDF2(password, salt, 50000, 512);
+	}
+
+	public static byte[] encrypterHash(String password, byte[] salt) {
+		return PBKDF2(password, salt, 10000, 128);
 	}
 
 	private static byte[] SHA512(String password, byte[] salt) {
@@ -106,16 +108,22 @@ public class Main extends Application {
 	}
 
 	//SRC adapted from https://www.owasp.org/index.php/Hashing_Java
-	public static byte[] PBKDF2(String password, final byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
-		final char[] passwordChars = password.toCharArray();
-		final int iterations = 1000;
-		final int keyLength = 512;
-		SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
-		PBEKeySpec spec = new PBEKeySpec(passwordChars, salt, iterations, keyLength);
-		SecretKey key = skf.generateSecret(spec);
-		return key.getEncoded();
+	private static byte[] PBKDF2(final String password, final byte[] salt, int iterations, int keyLength){
+		try {
+			final char[] passwordChars = password.toCharArray();
+			SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
+			PBEKeySpec spec = new PBEKeySpec(passwordChars, salt, iterations, keyLength);
+			SecretKey key;
+			key = skf.generateSecret(spec);
+			return key.getEncoded();
+
+		}
+		catch(Exception e) {
+			Main.fatalError(e, "Fatal exception in hashing function, so program must exit immediately");
+			return null;
+		}
 	}
-	
+
 	public void vmShutDown(){
 		// TODO Work out if unexpected, if so leave info
 	}

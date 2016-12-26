@@ -14,29 +14,25 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 public class Encrypter {
-	private byte[] key; // TODO test very long keys
+	private byte[] key;
 	private Cipher cipher;
 	private String cipherType = "AES";
 	
-	public Encrypter(String key) {
+	public Encrypter(String key, byte[] salt) {
 		try {
 			cipher = Cipher.getInstance(cipherType);
 		} catch (NoSuchAlgorithmException | NoSuchPaddingException e) {Main.fatalError(e, e.getMessage());} // Should not occur
-		try {
-			this.key = key.getBytes("UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
+		this.key = Main.encrypterHash(key, salt);
 	}
 	
 	public byte[] encrypt(String data, byte[] iv){
 		byte[] byteData = data.getBytes();
 		// SRC stackoverflow.com/questions/1205135/how-to-encrypt-string-in-java
 		SecretKeySpec keySpec = new SecretKeySpec(key, cipherType);
-		IvParameterSpec ivSpec = new IvParameterSpec(iv);
+		//IvParameterSpec ivSpec = new IvParameterSpec(iv);
 		try {
-			cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
-		} catch (InvalidKeyException | InvalidAlgorithmParameterException e) {Main.fatalError(e, e.getMessage());} // Should not occur
+			cipher.init(Cipher.ENCRYPT_MODE, keySpec/*, ivSpec*/);
+		} catch (InvalidKeyException/* | InvalidAlgorithmParameterException */e) {Main.fatalError(e, e.getMessage());} // Should not occur
 		byte[] encryptedData = new byte[cipher.getOutputSize(byteData.length)];
 		try {
 			int enc_len = cipher.update(byteData, 0, byteData.length, encryptedData, 0);
@@ -47,10 +43,10 @@ public class Encrypter {
 	
 	public String decrypt(byte[] data, byte[] iv) {
 		SecretKeySpec keySpec = new SecretKeySpec(key, cipherType);
-		IvParameterSpec ivSpec = new IvParameterSpec(iv);
+		/*IvParameterSpec ivSpec = new IvParameterSpec(iv);*/
 		try {
-			cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
-		} catch (InvalidKeyException | InvalidAlgorithmParameterException e) {Main.fatalError(e, e.getMessage());} // Should not occur
+			cipher.init(Cipher.DECRYPT_MODE, keySpec/*, ivSpec*/);
+		} catch (InvalidKeyException/* | InvalidAlgorithmParameterException*/ e) {Main.fatalError(e, e.getMessage());} // Should not occur
 		byte[] decryptedData = new byte[cipher.getOutputSize(data.length)];
 		try {
 			int dec_len = cipher.update(data, 0, data.length, decryptedData, 0);

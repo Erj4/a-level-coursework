@@ -50,7 +50,7 @@ public class LoginController extends VBox{
 			return;
 		}
 		if (passwordIsCorrect(passwordField.getText(), salt, shPassword))
-			logIn(usernameField.getText(), passwordField.getText());
+			logIn(usernameField.getText(), passwordField.getText(), salt);
 		else System.out.println("Incorrect password");
 	}
 
@@ -85,15 +85,16 @@ public class LoginController extends VBox{
 		String[] userAndPass = (String[]) ((Node) loader.getController()).getUserData();
 		String username = userAndPass[0];
 		String password = userAndPass[1];
+		byte[] salt = userAndPass[2].getBytes(); 
 		if (username!=null){
-			logIn(username, password);
+			logIn(username, password, salt);
 		}
 
 	}
 
-	private void logIn(String username, String key){
+	private void logIn(String username, String key, byte[] salt){
 		Main.db.setUsername(username);
-		Main.encrypter = new Encrypter(key);
+		Main.encrypter = new Encrypter(key, salt);
 		index((Stage)usernameField.getScene().getWindow());
 	}
 

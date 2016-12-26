@@ -2,10 +2,11 @@ package erj4.as.DataClasses;
 
 import java.util.ArrayList;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class CustomData {
-	private static ObservableList<CustomData> allValues;
+	private static ObservableList<CustomData> allValues = FXCollections.observableArrayList();
 	private Custom custom;
 	private CustomColumn column;
 	private byte[] encryptedData;
