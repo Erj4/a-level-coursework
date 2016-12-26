@@ -2,10 +2,11 @@ package erj4.as.DataClasses;
 
 import java.util.ArrayList;
 
+import javafx.collections.ObservableList;
 import erj4.as.Main;
 
 public class Template {
-	private static ArrayList<Template> allTemplates;
+	private static ObservableList<Template> allTemplates;
 	private final int ID;
 	private String name;
 	
@@ -15,12 +16,12 @@ public class Template {
 		allTemplates.add(this);
 	}
 	
-	public static ArrayList<Template> getAllTemplates(){
+	public static ObservableList<Template> getAllTemplates(){
 		return allTemplates;
 	}
 	
 	public static void setAllTemplates(ArrayList<Template> allTemplates){
-		Template.allTemplates=allTemplates;
+		Template.allTemplates.setAll(allTemplates);
 	}
 
 	public int getID() {

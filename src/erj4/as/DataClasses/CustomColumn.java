@@ -2,10 +2,11 @@ package erj4.as.DataClasses;
 
 import java.util.ArrayList;
 
+import javafx.collections.ObservableList;
 import erj4.as.Main;
 
 public class CustomColumn {
-	private static ArrayList<CustomColumn> allColumns;
+	private static ObservableList<CustomColumn> allColumns;
 	private final int ID;
 	private Template template;
 	private String name;
@@ -18,12 +19,12 @@ public class CustomColumn {
 		allColumns.add(this);
 	}
 
-	public static ArrayList<CustomColumn> getAllColumns() {
+	public static ObservableList<CustomColumn> getAllColumns() {
 		return allColumns;
 	}
 
 	public static void setAllColumns(ArrayList<CustomColumn> allColumns) {
-		CustomColumn.allColumns = allColumns;
+		CustomColumn.allColumns.setAll(allColumns);
 	}
 
 	public int getID() {

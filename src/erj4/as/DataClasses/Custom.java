@@ -1,11 +1,11 @@
 package erj4.as.DataClasses;
 
 import java.util.ArrayList;
-
+import javafx.collections.ObservableList;
 import erj4.as.Main;
 
 public class Custom {
-	private static ArrayList<Custom> allCustoms;
+	private static ObservableList<Custom> allCustoms;
 	private final int ID;
 	private Template template;
 	private String name;
@@ -18,12 +18,12 @@ public class Custom {
 		allCustoms.add(this);
 	}
 
-	public static ArrayList<Custom> getAllCustoms() {
+	public static ObservableList<Custom> getAllCustoms() {
 		return allCustoms;
 	}
 
 	public static void setAllCustoms(ArrayList<Custom> allCustoms) {
-		Custom.allCustoms = allCustoms;
+		Custom.allCustoms.setAll(allCustoms);
 	}
 
 	public int getID() {

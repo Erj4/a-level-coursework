@@ -2,10 +2,11 @@ package erj4.as.DataClasses;
 
 import java.util.ArrayList;
 
+import javafx.collections.ObservableList;
 import erj4.as.Main;
 
 public class Wallet {
-	private static ArrayList<Wallet> allWallets;
+	private static ObservableList<Wallet> allWallets;
 	private final int ID;
 	private String name;
 	
@@ -15,12 +16,12 @@ public class Wallet {
 		allWallets.add(this);
 	}
 
-	public static ArrayList<Wallet> getAllWallets() {
+	public static ObservableList<Wallet> getAllWallets() {
 		return allWallets;
 	}
 
 	public static void setAllWallets(ArrayList<Wallet> allWallets) {
-		Wallet.allWallets = allWallets;
+		Wallet.allWallets.setAll(allWallets);
 	}
 
 	public int getID() {

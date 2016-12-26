@@ -2,8 +2,10 @@ package erj4.as.DataClasses;
 
 import java.util.ArrayList;
 
+import javafx.collections.ObservableList;
+
 public class CustomData {
-	private static ArrayList<CustomData> allValues;
+	private static ObservableList<CustomData> allValues;
 	private Custom custom;
 	private CustomColumn column;
 	private byte[] encryptedData;
@@ -17,12 +19,12 @@ public class CustomData {
 		allValues.add(this);
 	}
 
-	public static ArrayList<CustomData> getAllValues() {
+	public static ObservableList<CustomData> getAllValues() {
 		return allValues;
 	}
 
 	public static void setAllValues(ArrayList<CustomData> allValues) {
-		CustomData.allValues = allValues;
+		CustomData.allValues.setAll(allValues);
 	}
 
 	public Custom getCustom() {
