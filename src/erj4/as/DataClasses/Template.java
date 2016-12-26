@@ -12,6 +12,7 @@ public class Template {
 	public Template(int ID, byte[] encryptedName, byte[] iv){
 		this.ID=ID;
 		this.name=Main.encrypter.decrypt(encryptedName, iv);
+		allTemplates.add(this);
 	}
 	
 	public static ArrayList<Template> getAllTemplates(){

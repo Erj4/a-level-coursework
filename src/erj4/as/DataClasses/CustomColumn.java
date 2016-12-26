@@ -15,6 +15,7 @@ public class CustomColumn {
 		this.ID=ID;
 		this.setTemplate(template);
 		this.setName(Main.encrypter.decrypt(encryptedColumnName, iv));
+		allColumns.add(this);
 	}
 
 	public static ArrayList<CustomColumn> getAllColumns() {

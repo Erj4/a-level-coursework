@@ -15,6 +15,7 @@ public class Custom {
 		this.ID=ID;
 		this.setTemplate(template);
 		this.setName(Main.encrypter.decrypt(encryptedName, iv));
+		allCustoms.add(this);
 	}
 
 	public static ArrayList<Custom> getAllCustoms() {

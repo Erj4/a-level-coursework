@@ -180,72 +180,89 @@ public class DatabaseConnection {
 	}
 
 	public void populate(){
+		clearJavaData();
 		try {
-			PreparedStatement walletStatement = newStatement("SELECT walletID, encryptedWalletName, iv FROM wallet WHERE user=?");
-			walletStatement.setString(1, username);
-			ResultSet walletResults = runQuery(walletStatement);
-			ArrayList<Wallet> wallets = new ArrayList<Wallet>();
-			Wallet.setAllWallets(wallets);
-			while(walletResults.next()){
-				Wallet newWallet = new Wallet(walletResults.getInt("walletID"), walletResults.getBytes("encryptedWalletName"), walletResults.getBytes("iv"));
-				wallets.add(newWallet);
-			}
-			
-			PreparedStatement templateStatement = newStatement("SELECT templateID, encryptedTemplateName, iv from Templates where user=?");
-			templateStatement.setString(1, username);
-			ResultSet templateResults = runQuery(templateStatement);
-			ArrayList<Template> templates = new ArrayList<Template>();
-			Template.setAllTemplates(templates);
-			while(templateResults.next()){
-				Template newTemplate = new Template(templateResults.getInt("templateID"), templateResults.getBytes("encryptedTemplateName"), templateResults.getBytes("iv"));
-				templates.add(newTemplate);
-
-				PreparedStatement customStatement = newStatement("SELECT customID, encryptedCustomName, iv from Customs where templateID=?");
-				customStatement.setInt(1, newTemplate.getID());
-				ResultSet customResults = runQuery(customStatement);
-				ArrayList<Custom> customs = new ArrayList<Custom>();
-				Custom.setAllCustoms(customs);
-				while(customResults.next()){
-					Custom newCustom = new Custom(customResults.getInt("customID"), newTemplate, customResults.getBytes("encryptedCustomName"), customResults.getBytes("iv"));
-					customs.add(newCustom);
-
-					PreparedStatement columnStatement = newStatement("SELECT columnID, encryptedColumnName, iv from Columns where templateID=?");
-					columnStatement.setInt(1, newTemplate.getID());
-					ResultSet columnResults = runQuery(columnStatement);
-					ArrayList<CustomColumn> columns = new ArrayList<CustomColumn>();
-					CustomColumn.setAllColumns(columns);
-					while(columnResults.next()){
-						CustomColumn newColumn = new CustomColumn(columnResults.getInt("columnID"), newTemplate, columnResults.getBytes("encryptedColumnName"), columnResults.getBytes("iv"));
-						columns.add(newColumn);
-						
-						PreparedStatement dataStatement = newStatement("SELECT customID, columnID, encryptedData, iv from CustomData where columnID=? and customID=?");
-						dataStatement.setInt(1, newColumn.getID());
-						dataStatement.setInt(2, newCustom.getID());
-						ResultSet dataResults = runQuery(dataStatement);
-						ArrayList<CustomData> data = new ArrayList<CustomData>();
-						CustomData.setAllValues(data);
-						while(dataResults.next()){
-							CustomData newData = new CustomData(newCustom, newColumn, dataResults.getBytes("encryptedData"), dataResults.getBytes("iv"));
-							data.add(newData);
-						}
-					}
-						
-					PreparedStatement walletLinkStatement = newStatement("SELECT Wallet.walletID from CustomInWallet INNER JOIN Wallet ON Wallet.walletID=CustomInWallet.walletID where CustomInWallet.customID=?");
-					walletLinkStatement.setInt(1, newCustom.getID());
-					ResultSet walletLinkResults = runQuery(walletLinkStatement);
-					while(walletLinkResults.next()){
-						for(Wallet wallet:wallets){
-							if(wallet.getID()==walletLinkResults.getInt("Wallet.walletID")){
-								newCustom.addToWallet(wallet);
-								break;
-							}
-						}
-					}
-				}
-			}
+			populateWallets();
+			populateTemplates();
 		}
 		catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void populateWallets() throws SQLException{
+		PreparedStatement walletStatement = newStatement("SELECT walletID, encryptedWalletName, iv FROM wallet WHERE user=?");
+		walletStatement.setString(1, username);
+		ResultSet walletResults = runQuery(walletStatement);
+		while(walletResults.next()){
+			new Wallet(walletResults.getInt("walletID"), walletResults.getBytes("encryptedWalletName"), walletResults.getBytes("iv"));
+		}
+	}
+	
+	private void populateTemplates() throws SQLException {
+		PreparedStatement templateStatement = newStatement("SELECT templateID, encryptedTemplateName, iv from Templates where user=?");
+		templateStatement.setString(1, username);
+		ResultSet templateResults = runQuery(templateStatement);
+		while(templateResults.next()){
+			Template newTemplate = new Template(templateResults.getInt("templateID"), templateResults.getBytes("encryptedTemplateName"), templateResults.getBytes("iv"));
+
+			populateCustomsForTemplate(newTemplate);
+		}
+	}
+
+	private void populateCustomsForTemplate(Template template) throws SQLException {
+		PreparedStatement customStatement = newStatement("SELECT customID, encryptedCustomName, iv from Customs where templateID=?");
+		customStatement.setInt(1, template.getID());
+		ResultSet customResults = runQuery(customStatement);
+		while(customResults.next()){
+			Custom newCustom = new Custom(customResults.getInt("customID"), template, customResults.getBytes("encryptedCustomName"), customResults.getBytes("iv"));
+
+			populateColumnsForCustom(newCustom);
+				
+			linkWalletsToCustom(newCustom);
+		}
+	}
+
+	private void linkWalletsToCustom(Custom custom) throws SQLException {
+		PreparedStatement walletLinkStatement = newStatement("SELECT Wallet.walletID from CustomInWallet INNER JOIN Wallet ON Wallet.walletID=CustomInWallet.walletID where CustomInWallet.customID=?");
+		walletLinkStatement.setInt(1, custom.getID());
+		ResultSet walletLinkResults = runQuery(walletLinkStatement);
+		while(walletLinkResults.next()){
+			for(Wallet wallet:Wallet.getAllWallets()){
+				if(wallet.getID()==walletLinkResults.getInt("Wallet.walletID")){
+					custom.addToWallet(wallet);
+					break;
+				}
+			}
+		}
+	}
+
+	private void populateColumnsForCustom(Custom custom) throws SQLException {
+		PreparedStatement columnStatement = newStatement("SELECT columnID, encryptedColumnName, iv from Columns where templateID=?");
+		columnStatement.setInt(1, custom.getTemplate().getID());
+		ResultSet columnResults = runQuery(columnStatement);
+		while(columnResults.next()){
+			CustomColumn newColumn = new CustomColumn(columnResults.getInt("columnID"), custom.getTemplate(), columnResults.getBytes("encryptedColumnName"), columnResults.getBytes("iv"));
+			
+			populateDataForColumnOfCustom(newColumn, custom);
+		}
+	}
+
+	private void populateDataForColumnOfCustom(CustomColumn column, Custom custom) throws SQLException {
+		PreparedStatement dataStatement = newStatement("SELECT customID, columnID, encryptedData, iv from CustomData where columnID=? and customID=?");
+		dataStatement.setInt(1, column.getID());
+		dataStatement.setInt(2, custom.getID());
+		ResultSet dataResults = runQuery(dataStatement);
+		while(dataResults.next()){
+			new CustomData(custom, column, dataResults.getBytes("encryptedData"), dataResults.getBytes("iv"));
+		}
+	}
+
+	private void clearJavaData(){
+		Custom.setAllCustoms(new ArrayList<>());
+		CustomColumn.setAllColumns(new ArrayList<>());
+		CustomData.setAllValues(new ArrayList<>());
+		Template.setAllTemplates(new ArrayList<>());
+		Wallet.setAllWallets(new ArrayList<>());
 	}
 }

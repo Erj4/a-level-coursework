@@ -14,6 +14,7 @@ public class CustomData {
 		this.setColumn(column);
 		this.setEncryptedData(encryptedData);
 		this.setIv(iv);
+		allValues.add(this);
 	}
 
 	public static ArrayList<CustomData> getAllValues() {

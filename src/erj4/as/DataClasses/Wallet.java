@@ -12,6 +12,7 @@ public class Wallet {
 	public Wallet(int ID, byte[] encryptedName, byte[] iv){
 		this.ID=ID;
 		this.setName(Main.encrypter.decrypt(encryptedName, iv));
+		allWallets.add(this);
 	}
 
 	public static ArrayList<Wallet> getAllWallets() {
