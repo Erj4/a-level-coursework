@@ -85,11 +85,16 @@ public class LoginController extends VBox{
 		String[] userAndPass = (String[]) ((Node) loader.getController()).getUserData();
 		String username = userAndPass[0];
 		String password = userAndPass[1];
-		byte[] salt = userAndPass[2].getBytes(); 
+		byte[] salt;
+		try{
+			salt = userAndPass[2].getBytes();
+		}
+		catch(NullPointerException e){
+			return;
+		}
 		if (username!=null){
 			logIn(username, password, salt);
 		}
-
 	}
 
 	private void logIn(String username, String key, byte[] salt){
