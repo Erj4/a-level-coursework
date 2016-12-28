@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import erj4.as.CustomInputs.ItemFieldInput;
 import erj4.as.DataClasses.Column;
 import erj4.as.DataClasses.Template;
 import javafx.fxml.FXML;
@@ -33,7 +34,7 @@ public class NewItemController extends VBox implements Initializable {
 
 	@FXML
 	private Button addItemFromScene;
-	
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources){
 		templateSelector.setItems(Template.getAllTemplates());
@@ -66,9 +67,15 @@ public class NewItemController extends VBox implements Initializable {
 	void templateSelected() {
 		System.out.println("Method run");
 		inputContainer.getChildren().clear();
-		for(Column column:templateSelector.getSelectionModel().getSelectedItem().getColumns()){
-			HBox field = new HBox(2, (Node) new Label(column.getName()+": "), column.isPassword()?(Node) new PasswordField():(Node) new TextField());
-			inputContainer.getChildren().add(field);
+		if(templateSelector.getSelectionModel().isSelected(-1))
+		{
+			placeholderText.setVisible(true);
+		}
+		else {
+			placeholderText.setVisible(false);
+			for(Column column:templateSelector.getSelectionModel().getSelectedItem().getColumns()){
+				inputContainer.getChildren().add(new ItemFieldInput(column));
+			}
 		}
 	}
 

@@ -7,63 +7,67 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER_RIGHT" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #f0f0f0;" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="erj4.as.NewItemController">
+<VBox alignment="CENTER_RIGHT" prefHeight="400.0" prefWidth="600.0" styleClass="main" stylesheets="@super.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="erj4.as.NewItemController">
    <children>
-      <ScrollPane hbarPolicy="NEVER" style="-fx-background: #f0f0f0;" styleClass="edge-to-edge" vbarPolicy="ALWAYS" VBox.vgrow="ALWAYS">
-         <content>
-            <VBox spacing="2.0">
+      <VBox spacing="2.0">
+         <children>
+            <Label text="Template">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </Label>
+            <HBox alignment="CENTER_LEFT" spacing="2.0">
                <children>
-                  <Label text="Template">
+                  <ComboBox fx:id="templateSelector" onAction="#templateSelected" prefWidth="150.0" promptText="Select a template">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </ComboBox>
+                  <Label text="or">
                      <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets top="5.0" />
-                     </VBox.margin>
-                  </Label>
-                  <HBox alignment="CENTER_LEFT" spacing="2.0">
-                     <children>
-                        <ComboBox fx:id="templateSelector" onAction="#templateSelected" prefWidth="150.0" promptText="Select a template">
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets></ComboBox>
-                        <Label text="or">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Label>
-                        <Button mnemonicParsing="false" onAction="#newTemplate" text="ADD NEW" />
-                     </children>
-                  </HBox>
-                  <Label text="Values">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets top="5.0" />
-                     </VBox.margin>
-                  </Label>
-                  <Label fx:id="placeholderText" text="Select a template first" textFill="#606060">
-                     <font>
-                        <Font size="18.0" />
+                        <Font size="14.0" />
                      </font>
                   </Label>
-                  <VBox fx:id="inputContainer" spacing="2.0" />
+                  <Button mnemonicParsing="false" onAction="#newTemplate" text="ADD NEW" />
                </children>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </VBox>
+            </HBox>
+            <Label text="Values">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="placeholderText" text="Select a template first" textFill="#606060">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </VBox>
+      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+         <content>
+            <VBox fx:id="inputContainer" spacing="5.0" />
          </content>
+         <styleClass>
+            <String fx:value="edge-to-edge" />
+            <String fx:value="ScrollPane" />
+         </styleClass>
       </ScrollPane>
-      <Button fx:id="addItemFromScene" mnemonicParsing="false" styleClass="nextButton" text="ADD ITEM">
+      <HBox alignment="CENTER_RIGHT">
          <VBox.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </VBox.margin>
-      </Button>
+         <children>
+            <Button fx:id="addItemFromScene" defaultButton="true" mnemonicParsing="false" styleClass="nextButton" text="ADD ITEM" />
+         </children>
+      </HBox>
    </children>
-   <stylesheets>
-      <URL value="@new_item.css" />
-      <URL value="@super.css" />
-   </stylesheets>
 </VBox>

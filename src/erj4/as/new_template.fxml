@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import java.net.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox prefHeight="400.0" prefWidth="600.0" styleClass="main" stylesheets="@super.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="erj4.as.NewTemplateController">
+   <children>
+      <Label text="Fields">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+         <VBox.margin>
+            <Insets top="5.0" />
+         </VBox.margin>
+      </Label>
+      <Label fx:id="placeholderText" text="Add a field using the button below" textFill="#606060">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="edge-to-edge" VBox.vgrow="ALWAYS">
+         <content>
+            <VBox>
+               <children>
+                  <VBox fx:id="inputContainer" spacing="5.0" VBox.vgrow="ALWAYS" />
+                  <ImageView fitHeight="150.0" fitWidth="30.0" onMouseClicked="#addField" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@ic_add_circle_black_48dp_2x.png" />
+                     </image>
+                     <effect>
+                        <ColorAdjust brightness="0.5" />
+                     </effect>
+                  </ImageView>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+      <HBox alignment="CENTER_RIGHT">
+         <VBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </VBox.margin>
+         <children>
+            <Button defaultButton="true" mnemonicParsing="false" onAction="#addItemFromScene" styleClass="nextButton" text="ADD TEMPLATE" />
+         </children>
+      </HBox>
+   </children>
+</VBox>

@@ -1,8 +1,0 @@
-Node:focused {
-    -fx-focus-color: lightgrey;
-}
-.nextButton {
-    -fx-background-color: #FF5722;
-    -fx-text-fill: white;
-    -fx-border-width: 0;
-}
