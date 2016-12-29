@@ -21,6 +21,10 @@ public class ItemFieldInput extends HBox {
 	public Column getColumn(){
 		return column;
 	}
+	
+	public String getInput(){
+		return input.getText();
+	}
 
 	public boolean isColumn(Column testColumn){
 		return column==testColumn;

@@ -1,5 +1,8 @@
 package erj4.as.DataClasses;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
@@ -8,7 +11,7 @@ import erj4.as.Main;
 
 public class Template {
 	private static ObservableList<Template> allTemplates = FXCollections.observableArrayList();
-	private static ObservableList<Column> columns = FXCollections.observableArrayList();
+	private ObservableList<Column> columns = FXCollections.observableArrayList();
 	private final int ID;
 	private String name;
 	
@@ -16,6 +19,35 @@ public class Template {
 		this.ID=ID;
 		this.name=Main.encrypter.decrypt(encryptedName, iv);
 		allTemplates.add(this);
+	}
+	
+	public Template(String name, byte[] iv){
+		this.name=name;
+		int tempID = -1;
+		PreparedStatement insertStatement = Main.db.newStatement("INSERT INTO Templates (encryptedTemplateName, owner, iv) VALUES (?, ?, ?);");
+        try {
+        	insertStatement.setBytes(1, Main.encrypter.encrypt(name, iv));
+        	insertStatement.setString(2, Main.db.getUsername());
+        	insertStatement.setBytes(3, iv);
+        	insertStatement.executeUpdate();
+        	}
+        catch (SQLException e) {
+        	Main.fatalError(e, "Database access error, program must exit immediately");
+        }
+        try {
+        	PreparedStatement idStatement = Main.db.newStatement("SELECT last_insert_rowid() As 'ID' FROM Templates;");
+            if (idStatement != null) {
+                ResultSet results = Main.db.runQuery(idStatement);
+                if (results != null) {
+                    tempID=results.getInt("ID");
+                }
+            }
+        }
+        catch (SQLException e) {
+            Main.fatalError(e, "Database access error, program must exit immediately");
+        }
+        this.ID=tempID;
+        allTemplates.add(this);
 	}
 	
 	public static ObservableList<Template> getAllTemplates(){

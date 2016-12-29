@@ -121,6 +121,7 @@ public class LoginController extends VBox{
 				Main.quit();
 			}
 		});
+		Main.db.populate();
 		stage.show();
 	}
 }

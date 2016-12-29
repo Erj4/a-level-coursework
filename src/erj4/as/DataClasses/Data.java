@@ -1,22 +1,43 @@
 package erj4.as.DataClasses;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
+import erj4.as.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class Data {
 	private static ObservableList<Data> allValues = FXCollections.observableArrayList();
-	private Custom custom;
 	private Column column;
 	private byte[] encryptedData;
 	private byte[] iv;
 	
 	public Data(Custom custom, Column column, byte[] encryptedData, byte[] iv) {
-		this.setCustom(custom);
+		custom.addData(this);
 		this.setColumn(column);
 		this.setEncryptedData(encryptedData);
 		this.setIv(iv);
+		allValues.add(this);
+	}
+	
+	public Data(Custom custom, Column column, String data, byte[] iv) {
+		this(custom, column, Main.encrypter.encrypt(data, iv), iv);
+		PreparedStatement statement = Main.db.newStatement("INSERT INTO CustomData (customID, columnID, encryptedData, iv) VALUES (?, ?, ?, ?);");
+		try {
+			statement.setInt(1, custom.getID());
+			statement.setInt(2, column.getID());
+			statement.setBytes(3, Main.encrypter.encrypt(data, iv));
+			statement.setBytes(4, iv);
+			if (statement != null) {
+				Main.db.runUpdate(statement);
+			}
+		}
+		catch (SQLException e) {
+			Main.fatalError(e, "Database access error, program must exit immediately");
+		}
+		
 		allValues.add(this);
 	}
 
@@ -26,14 +47,6 @@ public class Data {
 
 	public static void setAllValues(ArrayList<Data> allValues) {
 		Data.allValues.setAll(allValues);
-	}
-
-	public Custom getCustom() {
-		return custom;
-	}
-
-	public void setCustom(Custom custom) {
-		this.custom = custom;
 	}
 
 	public Column getColumn() {

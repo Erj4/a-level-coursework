@@ -107,4 +107,8 @@ public class Main extends Application {
 	public void vmShutDown(){
 		// TODO Work out if unexpected, if so leave info
 	}
+
+	public static byte[] getIV() {
+		return randomBytes(16);
+	}
 }

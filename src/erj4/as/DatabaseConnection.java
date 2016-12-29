@@ -12,7 +12,7 @@ import erj4.as.DataClasses.*;
 
 public class DatabaseConnection {
 
-	private Connection conection = null;
+	private Connection connection = null;
 	private String[] dbCreationStatement = {
 			"PRAGMA foreign_keys = off;\r\n",
 			"BEGIN TRANSACTION;\r\n",
@@ -29,28 +29,28 @@ public class DatabaseConnection {
 					+ "    PRIMARY KEY (\r\n" + "        username\r\n"
 					+ "    )\r\n" + ");",
 			"CREATE TABLE IF NOT EXISTS Wallets (\r\n"
-					+ "    walletID            INTEGER NOT NULL,\r\n"
-					+ "    encryptedWalletName BLOB 	 NOT NULL,\r\n"
-					+ "    username            CHAR	 NOT NULL,\r\n"
-					+ "    iv		             BLOB	 NOT NULL,\r\n"
+					+ "    walletID				INTEGER NOT NULL,\r\n"
+					+ "    encryptedWalletName	BLOB 	 NOT NULL,\r\n"
+					+ "    owner				CHAR	 NOT NULL,\r\n"
+					+ "    iv					BLOB	 NOT NULL,\r\n"
 					+ "    PRIMARY KEY (\r\n" + "        walletID\r\n"
 					+ "    ),\r\n" + "    FOREIGN KEY (\r\n"
-					+ "        username\r\n" + "    )\r\n"
+					+ "        owner\r\n" + "    )\r\n"
 					+ "    REFERENCES Users (username) \r\n" + ");",
 			"CREATE TABLE IF NOT EXISTS Templates (\r\n"
-					+ "    templateID            INTEGER NOT NULL,\r\n"
-					+ "    encryptedTemplateName BLOB	   NOT NULL,\r\n"
-					+ "    owner				   CHAR    NOT NULL,\r\n"
-					+ "    iv		           	   BLOB	   NOT NULL,\r\n"
+					+ "    templateID				INTEGER	NOT NULL,\r\n"
+					+ "    encryptedTemplateName	BLOB	NOT NULL,\r\n"
+					+ "    owner					CHAR	NOT NULL,\r\n"
+					+ "    iv						BLOB	NOT NULL,\r\n"
 					+ "    PRIMARY KEY (\r\n" + "        templateID\r\n"
 					+ "    ),\r\n" + "    FOREIGN KEY (\r\n"
 					+ "        owner \r\n" + "    )\r\n"
 					+ "    REFERENCES Users (username) \r\n" + ");",
 			"CREATE TABLE IF NOT EXISTS Customs (\r\n"
-					+ "    customID      			INTEGER NOT NULL,\r\n"
-					+ "    templateID	   			INTEGER NOT NULL,\r\n"
-					+ "    encryptedCustomName 	BLOB	NOT NULL,\r\n"
-					+ "    iv		       			BLOB	NOT NULL,\r\n"
+					+ "    customID				INTEGER NOT NULL,\r\n"
+					+ "    templateID			INTEGER NOT NULL,\r\n"
+					+ "    encryptedCustomName	BLOB	NOT NULL,\r\n"
+					+ "    iv					BLOB	NOT NULL,\r\n"
 					+ "    PRIMARY KEY (\r\n" + "        customID\r\n"
 					+ "    ),\r\n" + "    FOREIGN KEY (\r\n"
 					+ "        templateID\r\n" + "    )\r\n"
@@ -61,7 +61,7 @@ public class DatabaseConnection {
 					+ "    templateID				INTEGER     NOT NULL,\r\n"
 					+ "    iv		             	BLOB		NOT NULL,\r\n"
 					+ "    isPassword             	BOOL		NOT NULL,\r\n"
-					+ "    PRIMARY KEY (\r\n" + "        templateID\r\n"
+					+ "    PRIMARY KEY (\r\n" + "        columnID\r\n"
 					+ "    ),\r\n" + "    FOREIGN KEY (\r\n"
 					+ "        templateID\r\n" + "    )\r\n"
 					+ "    REFERENCES Templates (templateID) \r\n" + ");",
@@ -97,9 +97,9 @@ public class DatabaseConnection {
 		try             // There are many things that can go wrong in establishing a database connection...
 		{         
 			Class.forName("org.sqlite.JDBC");                               // ... a missing driver class ...
-			conection = DriverManager.getConnection("jdbc:sqlite:" + dbFile); // ... or an error with the file.
+			connection = DriverManager.getConnection("jdbc:sqlite:" + dbFile); // ... or an error with the file.
 			System.out.println("Database connection successfully established.");
-			Statement statement = conection.createStatement();
+			Statement statement = connection.createStatement();
 			for(int i=0; i<dbCreationStatement.length; i++){
 				statement.addBatch(dbCreationStatement[i]);
 			}
@@ -125,7 +125,7 @@ public class DatabaseConnection {
 	{
 		PreparedStatement statement = null;
 		try {
-			statement = conection.prepareStatement(query);
+			statement = connection.prepareStatement(query);
 		}
 		catch (SQLException resultsexception) 
 		{
@@ -164,7 +164,7 @@ public class DatabaseConnection {
 	{
 		System.out.println("Disconnecting from database.");
 		try {
-			if (conection != null) conection.close();                        
+			if (connection != null) connection.close();                        
 		} 
 		catch (SQLException finalexception) 
 		{
@@ -192,7 +192,7 @@ public class DatabaseConnection {
 	}
 	
 	private void populateWallets() throws SQLException{
-		PreparedStatement walletStatement = newStatement("SELECT walletID, encryptedWalletName, iv FROM wallet WHERE user=?");
+		PreparedStatement walletStatement = newStatement("SELECT walletID, encryptedWalletName, iv FROM Wallets WHERE owner=?");
 		walletStatement.setString(1, username);
 		ResultSet walletResults = runQuery(walletStatement);
 		while(walletResults.next()){
@@ -201,11 +201,14 @@ public class DatabaseConnection {
 	}
 	
 	private void populateTemplates() throws SQLException {
-		PreparedStatement templateStatement = newStatement("SELECT templateID, encryptedTemplateName, iv from Templates where user=?");
+		System.out.println(username);
+		PreparedStatement templateStatement = newStatement("SELECT templateID, encryptedTemplateName, iv from Templates where owner=?");
 		templateStatement.setString(1, username);
 		ResultSet templateResults = runQuery(templateStatement);
 		while(templateResults.next()){
 			Template newTemplate = new Template(templateResults.getInt("templateID"), templateResults.getBytes("encryptedTemplateName"), templateResults.getBytes("iv"));
+			
+			populateColumnsForTemplate(newTemplate);
 			
 			populateCustomsForTemplate(newTemplate);
 		}
@@ -218,14 +221,14 @@ public class DatabaseConnection {
 		while(customResults.next()){
 			Custom newCustom = new Custom(customResults.getInt("customID"), template, customResults.getBytes("encryptedCustomName"), customResults.getBytes("iv"));
 
-			populateColumnsForCustom(newCustom);
+			for(Column column:template.getColumns()) populateDataForColumnOfCustom(column, newCustom);
 				
 			linkWalletsToCustom(newCustom);
 		}
 	}
 
 	private void linkWalletsToCustom(Custom custom) throws SQLException {
-		PreparedStatement walletLinkStatement = newStatement("SELECT Wallet.walletID from CustomInWallet INNER JOIN Wallet ON Wallet.walletID=CustomInWallet.walletID where CustomInWallet.customID=?");
+		PreparedStatement walletLinkStatement = newStatement("SELECT Wallets.walletID from CustomInWallet INNER JOIN Wallets ON Wallets.walletID=CustomInWallet.walletID where CustomInWallet.customID=?");
 		walletLinkStatement.setInt(1, custom.getID());
 		ResultSet walletLinkResults = runQuery(walletLinkStatement);
 		while(walletLinkResults.next()){
@@ -238,14 +241,12 @@ public class DatabaseConnection {
 		}
 	}
 
-	private void populateColumnsForCustom(Custom custom) throws SQLException {
-		PreparedStatement columnStatement = newStatement("SELECT columnID, encryptedColumnName, iv, isBoolean from Columns where templateID=?");
-		columnStatement.setInt(1, custom.getTemplate().getID());
+	private void populateColumnsForTemplate(Template template) throws SQLException {
+		PreparedStatement columnStatement = newStatement("SELECT columnID, encryptedColumnName, iv, isPassword from CustomColumns where templateID=?");
+		columnStatement.setInt(1, template.getID());
 		ResultSet columnResults = runQuery(columnStatement);
 		while(columnResults.next()){
-			Column newColumn = new Column(columnResults.getInt("columnID"), custom.getTemplate(), columnResults.getBytes("encryptedColumnName"), columnResults.getBytes("iv"), columnResults.getBoolean("isPassword"));
-
-			populateDataForColumnOfCustom(newColumn, custom);
+			new Column(columnResults.getInt("columnID"), template, columnResults.getBytes("encryptedColumnName"), columnResults.getBytes("iv"), columnResults.getBoolean("isPassword"));
 		}
 	}
 

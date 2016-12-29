@@ -6,18 +6,17 @@ import java.util.ResourceBundle;
 
 import erj4.as.CustomInputs.ItemFieldInput;
 import erj4.as.DataClasses.Column;
+import erj4.as.DataClasses.Custom;
+import erj4.as.DataClasses.Data;
 import erj4.as.DataClasses.Template;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -31,9 +30,9 @@ public class NewItemController extends VBox implements Initializable {
 
 	@FXML
 	private VBox inputContainer;
-
+	
 	@FXML
-	private Button addItemFromScene;
+	private TextField nameField;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources){
@@ -43,7 +42,7 @@ public class NewItemController extends VBox implements Initializable {
 	@FXML
 	void newTemplate() {
 		String fileName = "new_template.fxml";
-		//
+		
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(fileName));
 		Stage stage = new Stage();
 		stage.setTitle("Add new template");
@@ -59,13 +58,11 @@ public class NewItemController extends VBox implements Initializable {
 		Template newTemplate = (Template) ((Node) loader.getController()).getUserData();
 		if(newTemplate != null){
 			templateSelector.getSelectionModel().select(newTemplate);
-			templateSelected();
 		}
 	}
 
 	@FXML
 	void templateSelected() {
-		System.out.println("Method run");
 		inputContainer.getChildren().clear();
 		if(templateSelector.getSelectionModel().isSelected(-1))
 		{
@@ -79,5 +76,15 @@ public class NewItemController extends VBox implements Initializable {
 		}
 	}
 
-
+	@FXML
+	void addItemFromScene() {
+		Custom custom = new Custom(templateSelector.getSelectionModel().getSelectedItem(), nameField.getText(), Main.getIV());
+		for (Node x:inputContainer.getChildren()){
+			ItemFieldInput ifi = (ItemFieldInput) x;
+			byte[] iv = Main.getIV();
+			new Data(custom, ifi.getColumn(), ifi.getInput(), iv);
+		}
+		((Stage) inputContainer.getScene().getWindow()).close();
+	}
+	
 }

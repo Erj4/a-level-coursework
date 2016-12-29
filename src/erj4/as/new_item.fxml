@@ -11,6 +11,12 @@
    <children>
       <VBox spacing="2.0">
          <children>
+            <Label text="Name">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="nameField" />
             <Label text="Template">
                <font>
                   <Font name="System Bold" size="14.0" />
@@ -66,7 +72,7 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </VBox.margin>
          <children>
-            <Button fx:id="addItemFromScene" defaultButton="true" mnemonicParsing="false" styleClass="nextButton" text="ADD ITEM" />
+            <Button defaultButton="true" mnemonicParsing="false" onMouseClicked="#addItemFromScene" styleClass="nextButton" text="ADD ITEM" />
          </children>
       </HBox>
    </children>
