@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import erj4.as.CustomInputs.ItemFieldInput;
+import erj4.as.CustomElements.ItemFieldInput;
 import erj4.as.DataClasses.Column;
 import erj4.as.DataClasses.Custom;
 import erj4.as.DataClasses.Data;

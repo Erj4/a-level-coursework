@@ -1,6 +1,6 @@
 package erj4.as;
 
-import erj4.as.CustomInputs.TemplateFieldInput;
+import erj4.as.CustomElements.TemplateFieldInput;
 import erj4.as.DataClasses.Column;
 import erj4.as.DataClasses.Template;
 import javafx.fxml.FXML;

@@ -1,4 +1,4 @@
-package erj4.as.CustomInputs;
+package erj4.as.CustomElements;
 
 import erj4.as.NewTemplateController;
 import javafx.event.ActionEvent;
