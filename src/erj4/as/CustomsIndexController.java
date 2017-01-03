@@ -52,7 +52,6 @@ public class CustomsIndexController extends IndexController implements Initializ
 
 	FilteredList<Custom> filtered;
 
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		walletFilterBox.getItems().clear();
@@ -65,7 +64,8 @@ public class CustomsIndexController extends IndexController implements Initializ
 			public boolean test(Custom t) {
 				if(templateFilterBox.getSelectionModel().getSelectedItem()!=null && t.getTemplate()!=templateFilterBox.getSelectionModel().getSelectedItem()) return false;
 				for(Wallet w:walletFilterBox.getCheckModel().getCheckedItems()) if(!w.getCustoms().contains(t)) return false;
-				return true; 
+				if(!t.getName().contains(searchBox.getText())) return false;
+				return true;
 			}});
 		itemsList.setItems(filtered);
 		walletFilterBox.getCheckModel().getCheckedItems().addListener(new ListChangeListener<Wallet>(){
@@ -78,6 +78,11 @@ public class CustomsIndexController extends IndexController implements Initializ
 			public void changed(ObservableValue<? extends Template> observable, Template oldValue, Template newValue) {
 				updateListView();
 			}});
+		searchBox.textProperty().addListener(new ChangeListener<String>(){
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				updateListView();
+			}});
 	}
 
 	private void updateListView() {
@@ -86,6 +91,7 @@ public class CustomsIndexController extends IndexController implements Initializ
 			public boolean test(Custom t) {
 				if(templateFilterBox.getSelectionModel().getSelectedItem()!=null && t.getTemplate()!=templateFilterBox.getSelectionModel().getSelectedItem()) return false;
 				for(Wallet w:walletFilterBox.getCheckModel().getCheckedItems()) if(!w.getCustoms().contains(t)) return false;
+				if(!t.getName().contains(searchBox.getText())) return false;
 				return true;
 			}});
 	}
