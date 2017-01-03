@@ -90,8 +90,7 @@ public class DatabaseConnection {
 			"COMMIT TRANSACTION;\r\n", "PRAGMA foreign_keys = on;\r\n" };
 	private String username = null;
 
-	/* This method is the constructor. When a new DatabaseConnection object is created a connection
-	 * to the database is established using the filename and database drive. */
+	// connection to the database is established using the filename and database drive.
 	public DatabaseConnection(String dbFile)
 	{
 		try             // There are many things that can go wrong in establishing a database connection...
@@ -115,7 +114,6 @@ public class DatabaseConnection {
 		{                        
 			System.out.println("Database connection error: " + exception.getMessage());
 			Main.fatalError(exception, "Database file error, the program must exit immediately.");
-
 		}
 
 	}
@@ -233,8 +231,8 @@ public class DatabaseConnection {
 		ResultSet walletLinkResults = runQuery(walletLinkStatement);
 		while(walletLinkResults.next()){
 			for(Wallet wallet:Wallet.getAllWallets()){
-				if(wallet.getID()==walletLinkResults.getInt("Wallet.walletID")){
-					custom.addToWallet(wallet);
+				if(wallet.getID()==walletLinkResults.getInt("walletID")){
+					wallet.addCustomFromDbStatement(custom);
 					break;
 				}
 			}

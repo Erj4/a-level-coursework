@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.text.*?>
-<?import org.controlsfx.control.*?>
 <?import java.net.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
@@ -21,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
-<StackPane styleClass="bkgd" stylesheets="@super.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane styleClass="bkgd" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="erj4.as.WalletsIndexController">
    <children>
       <VBox fx:id="mainPane" prefHeight="400.0" prefWidth="600.0" style="-fx-padding: 0;" styleClass="main">
          <children>
@@ -60,57 +57,17 @@
             </StackPane>
             <HBox VBox.vgrow="ALWAYS">
                <children>
-                  <SplitPane dividerPositions="0.626" HBox.hgrow="ALWAYS">
+                  <SplitPane dividerPositions="0.6" HBox.hgrow="ALWAYS">
                     <items>
                         <ListView fx:id="itemsList" onMouseClicked="#itemSelected" prefHeight="200.0" prefWidth="200.0" />
-                        <VBox fx:id="detailsPane" prefHeight="200.0" prefWidth="100.0" />
+                        <ListView fx:id="detailsPane" onMouseClicked="#customClicked" prefHeight="200.0" prefWidth="200.0" />
                     </items>
                   </SplitPane>
                </children>
             </HBox>
-            <HBox alignment="CENTER_LEFT" spacing="2.0" styleClass="actionBar">
+            <HBox spacing="2.0" styleClass="actionBar">
                <children>
                   <Button mnemonicParsing="false" onAction="#newItem" styleClass="actionBarButton" text="ADD NEW" />
-                  <Separator orientation="VERTICAL" />
-                  <Label text="Filter:">
-                     <font>
-                        <Font name="System Bold" size="14.0" />
-                     </font>
-                  </Label>
-                  <Label text="Wallets:">
-                     <font>
-                        <Font size="13.0" />
-                     </font>
-                  </Label>
-                  <CheckComboBox fx:id="walletFilterBox" prefWidth="100.0" style="-fx-: pink;" />
-                  <ImageView fitHeight="24.0" fitWidth="24.0" onMouseClicked="#clearWalletFilter" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@ic_clear_black_48dp_2x.png" />
-                     </image>
-                     <effect>
-                        <ColorAdjust brightness="0.6" />
-                     </effect>
-                     <HBox.margin>
-                        <Insets left="-4.0" />
-                     </HBox.margin>
-                  </ImageView>
-                  <Label text="Template:">
-                     <font>
-                        <Font size="13.0" />
-                     </font>
-                  </Label>
-                  <ComboBox fx:id="templateFilterBox" prefWidth="100.0" />
-                  <ImageView fitHeight="24.0" fitWidth="24.0" onMouseClicked="#clearTemplateFilter" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@ic_clear_black_48dp_2x.png" />
-                     </image>
-                     <effect>
-                        <ColorAdjust brightness="0.6" />
-                     </effect>
-                     <HBox.margin>
-                        <Insets left="-4.0" />
-                     </HBox.margin>
-                  </ImageView>
                </children>
                <padding>
                   <Insets left="2.0" right="2.0" />
@@ -136,4 +93,8 @@
          </children>
       </AnchorPane>
    </children>
+   <stylesheets>
+      <URL value="@index.css" />
+      <URL value="@super.css" />
+   </stylesheets>
 </StackPane>

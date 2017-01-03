@@ -100,16 +100,17 @@ public class LoginController extends VBox{
 	private void logIn(String username, String key, byte[] salt){
 		Main.db.setUsername(username);
 		Main.encrypter = new Encrypter(key, salt);
+		Main.db.populate();
 		index((Stage)usernameField.getScene().getWindow());
 	}
 
 	public void index(Stage stage) {
-		Parent root = null;
 		String fileName = "index.fxml";
 		Scene scene = null;
 		try {
-			root = FXMLLoader.load(getClass().getResource(fileName));
-			scene = new Scene(root, 800, 450);
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(fileName));
+			loader.setController(new CustomsIndexController());
+			scene = new Scene((Parent)loader.load(), 800, 450);
 		} catch (Exception e) {
 			Main.fatalError(e, "An error occured while trying to load the resource "+fileName+", so the program must exit immediately");
 		}
@@ -121,7 +122,6 @@ public class LoginController extends VBox{
 				Main.quit();
 			}
 		});
-		Main.db.populate();
 		stage.show();
 	}
 }

@@ -2,7 +2,8 @@ Node {
     -fx-background-insets: 0;
 }
 Button,
-ComboBox {
+.combo-box,
+.combo-box-base {
     -fx-background-color: white;
     -fx-border-color: grey;
     -fx-border-width: 1;
