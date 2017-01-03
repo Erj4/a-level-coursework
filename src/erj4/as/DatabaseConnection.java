@@ -21,7 +21,7 @@ public class DatabaseConnection {
 					+ "    PRIMARY KEY (\r\n" + "        username\r\n"
 					+ "    ),\r\n" + "    FOREIGN KEY (\r\n"
 					+ "        username\r\n" + "    )\r\n"
-					+ "    REFERENCES Users (username) \r\n" + ");",
+					+ "    REFERENCES Users (username) ON DELETE CASCADE \r\n" + ");",
 			"CREATE TABLE IF NOT EXISTS Users (\r\n"
 					+ "    username CHAR      NOT NULL,\r\n"
 					+ "    hsKey    BLOB		NOT NULL,\r\n"
@@ -36,7 +36,7 @@ public class DatabaseConnection {
 					+ "    PRIMARY KEY (\r\n" + "        walletID\r\n"
 					+ "    ),\r\n" + "    FOREIGN KEY (\r\n"
 					+ "        owner\r\n" + "    )\r\n"
-					+ "    REFERENCES Users (username) \r\n" + ");",
+					+ "    REFERENCES Users (username) ON DELETE CASCADE \r\n" + ");",
 			"CREATE TABLE IF NOT EXISTS Templates (\r\n"
 					+ "    templateID				INTEGER	NOT NULL,\r\n"
 					+ "    encryptedTemplateName	BLOB	NOT NULL,\r\n"
@@ -45,7 +45,7 @@ public class DatabaseConnection {
 					+ "    PRIMARY KEY (\r\n" + "        templateID\r\n"
 					+ "    ),\r\n" + "    FOREIGN KEY (\r\n"
 					+ "        owner \r\n" + "    )\r\n"
-					+ "    REFERENCES Users (username) \r\n" + ");",
+					+ "    REFERENCES Users (username) ON DELETE CASCADE \r\n" + ");",
 			"CREATE TABLE IF NOT EXISTS Customs (\r\n"
 					+ "    customID				INTEGER NOT NULL,\r\n"
 					+ "    templateID			INTEGER NOT NULL,\r\n"
@@ -54,7 +54,7 @@ public class DatabaseConnection {
 					+ "    PRIMARY KEY (\r\n" + "        customID\r\n"
 					+ "    ),\r\n" + "    FOREIGN KEY (\r\n"
 					+ "        templateID\r\n" + "    )\r\n"
-					+ "    REFERENCES Templates (templateID) \r\n" + ");",
+					+ "    REFERENCES Templates (templateID) ON DELETE CASCADE \r\n" + ");",
 			"CREATE TABLE IF NOT EXISTS CustomColumns (\r\n"
 					+ "    columnID					INTEGER     NOT NULL,\r\n"
 					+ "    encryptedColumnName		BLOB		NOT NULL,\r\n"
@@ -64,16 +64,16 @@ public class DatabaseConnection {
 					+ "    PRIMARY KEY (\r\n" + "        columnID\r\n"
 					+ "    ),\r\n" + "    FOREIGN KEY (\r\n"
 					+ "        templateID\r\n" + "    )\r\n"
-					+ "    REFERENCES Templates (templateID) \r\n" + ");",
+					+ "    REFERENCES Templates (templateID) ON DELETE CASCADE \r\n" + ");",
 			"CREATE TABLE IF NOT EXISTS CustomInWallet (\r\n"
 					+ "    customID INTEGER NOT NULL,\r\n"
 					+ "    walletID INTEGER NOT NULL,\r\n"
 					+ "    PRIMARY KEY (\r\n" + "        customID,\r\n"
 					+ "        walletID\r\n" + "    ),\r\n"
 					+ "    FOREIGN KEY (\r\n" + "        customID\r\n"
-					+ "    )\r\n" + "    REFERENCES Customs (customID),\r\n"
+					+ "    )\r\n" + "    REFERENCES Customs (customID) ON DELETE CASCADE,\r\n"
 					+ "    FOREIGN KEY (\r\n" + "        walletID\r\n"
-					+ "    )\r\n" + "    REFERENCES Wallets (walletID) \r\n"
+					+ "    )\r\n" + "    REFERENCES Wallets (walletID) ON DELETE CASCADE \r\n"
 					+ ");",
 			"CREATE TABLE IF NOT EXISTS CustomData (\r\n"
 					+ "    customID       INTEGER  NOT NULL,\r\n"
@@ -83,10 +83,10 @@ public class DatabaseConnection {
 					+ "    PRIMARY KEY (\r\n" + "        customID,\r\n"
 					+ "		 columnID\r\n" + "    ),\r\n"
 					+ "    FOREIGN KEY (\r\n" + "        customID\r\n"
-					+ "    )\r\n" + "    REFERENCES Customs (customID) \r\n"
+					+ "    )\r\n" + "    REFERENCES Customs (customID) ON DELETE CASCADE \r\n"
 					+ "    FOREIGN KEY (\r\n" + "        columnID\r\n"
 					+ "    )\r\n"
-					+ "    REFERENCES CustomColumns (columnID) \r\n" + ");",
+					+ "    REFERENCES CustomColumns (columnID) ON DELETE CASCADE \r\n" + ");",
 			"COMMIT TRANSACTION;\r\n", "PRAGMA foreign_keys = on;\r\n" };
 	private String username = null;
 

@@ -48,7 +48,7 @@ public class NewWalletController extends VBox implements Initializable{
 	@FXML
 	private void addWalletFromScene() {
 		Wallet w = new Wallet(nameField.getText(), Main.getIV());
-		for(Custom x:inputContainer.getSelectionModel().getSelectedItems()){
+		for(Custom x:inputContainer.getCheckModel().getCheckedItems()){
 			w.addCustom(x);
 		}
 		this.setUserData(w);

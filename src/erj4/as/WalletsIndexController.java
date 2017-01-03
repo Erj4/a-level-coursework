@@ -81,6 +81,7 @@ public class WalletsIndexController extends IndexController {
 				loader.setController(controller);
 				scene = new Scene((Parent)loader.load());
 				controller.itemsList.getSelectionModel().select(detailsPane.getSelectionModel().getSelectedItem());
+				controller.itemSelected(null);
 			} catch (Exception e) {
 				Main.fatalError(e, "An error occured while trying to load the resource "+fileName+", so the program must exit immediately");
 			}
