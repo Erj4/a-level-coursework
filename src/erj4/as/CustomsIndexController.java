@@ -126,29 +126,49 @@ public class CustomsIndexController extends IndexController implements Initializ
 
 	@FXML
 	public void itemSelected(MouseEvent e) {
-		detailsPane.getChildren().clear();
-		Custom custom = itemsList.getSelectionModel().getSelectedItem();
-		if (custom==null) return;
-		Separator separator=null;
-		for (Data d:custom.getData()){
-			Label columnLabel = new Label(d.getColumn().getName());
-			columnLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, Font.getDefault().getSize()));
-			separator=new Separator();
-			detailsPane.getChildren().addAll(columnLabel, new DataDisplay(d), separator);
+		if(e.getClickCount()==1){
+			detailsPane.getChildren().clear();
+			Custom custom = itemsList.getSelectionModel().getSelectedItem();
+			if (custom==null) return;
+			Separator separator=null;
+			for (Data d:custom.getData()){
+				Label columnLabel = new Label(d.getColumn().getName());
+				columnLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, Font.getDefault().getSize()));
+				separator=new Separator();
+				detailsPane.getChildren().addAll(columnLabel, new DataDisplay(d), separator);
+			}
+			if(separator!=null) detailsPane.getChildren().remove(separator);
 		}
-		if(separator!=null) detailsPane.getChildren().remove(separator);
+		if(e.getClickCount()==2){
+			Custom custom = itemsList.getSelectionModel().getSelectedItem();
+			if (custom==null) return;
+			String fileName = "new_item.fxml";
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(fileName));
+			Stage stage = new Stage();
+			stage.setTitle("Edit item");
+			try {
+				stage.setScene(new Scene(loader.load()));
+				((NewItemController) loader.getController()).editMode(custom);
+			} catch (IOException ex) {
+				Main.fatalError(ex, "An error occured while trying to load the resource "+fileName+", so the program must exit immediately");
+			}
+			stage.setResizable(false);
+			stage.initModality(Modality.WINDOW_MODAL);
+			stage.initOwner(searchBox.getScene().getWindow());
+			stage.showAndWait();
+		}
 	}
-	
+
 	@FXML
 	public void clearWalletFilter() {
 		walletFilterBox.getCheckModel().clearChecks();
 	}
-	
+
 	@FXML
 	public void clearTemplateFilter() {
 		templateFilterBox.getSelectionModel().clearSelection();
 	}
-	
+
 	public void filter(Wallet wallet){
 		walletFilterBox.getCheckModel().check(wallet);
 	}

@@ -56,7 +56,7 @@ public class WalletsIndexController extends IndexController {
 			String fileName = "new_wallet.fxml";
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(fileName));
 			Stage stage = new Stage();
-			stage.setTitle("Add new wallet");
+			stage.setTitle("Edit wallet");
 			try {
 				stage.setScene(new Scene(loader.load()));
 				((NewWalletController) loader.getController()).editMode(wallet);

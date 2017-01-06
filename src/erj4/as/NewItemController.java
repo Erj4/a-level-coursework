@@ -14,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -33,6 +34,14 @@ public class NewItemController extends VBox implements Initializable {
 	
 	@FXML
 	private TextField nameField;
+	
+	@FXML
+	private Button deleteButton;
+	
+	@FXML
+	private Button saveButton;
+	
+	private Custom custom;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources){
@@ -85,6 +94,32 @@ public class NewItemController extends VBox implements Initializable {
 			new Data(custom, ifi.getColumn(), ifi.getInput(), iv);
 		}
 		((Stage) inputContainer.getScene().getWindow()).close();
+	}
+
+	public void editMode(Custom custom) {
+		this.custom=custom;
+		nameField.setText(custom.getName());
+		templateSelector.getSelectionModel().select(custom.getTemplate());
+		templateSelected();
+		
+		for(Node x:inputContainer.getChildren()) {
+			ItemFieldInput ifi = (ItemFieldInput) x;
+			Data d = null;
+			for(Data data:custom.getData()) if (data.getColumn()==ifi.getColumn()) d=data;
+			ifi.setData(d);
+		}
+		deleteButton.setVisible(true);
+		saveButton.setText("SAVE");
+		saveButton.setOnAction(e->saveUpdate());
+	}
+	
+	private void saveUpdate() {
+		
+	}
+	
+	@FXML
+	void delete(){
+		
 	}
 	
 }

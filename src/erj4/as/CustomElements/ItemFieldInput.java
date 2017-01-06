@@ -1,6 +1,7 @@
 package erj4.as.CustomElements;
 
 import erj4.as.DataClasses.Column;
+import erj4.as.DataClasses.Data;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -9,6 +10,7 @@ import javafx.scene.layout.HBox;
 public class ItemFieldInput extends HBox {
 	private Column column;
 	private TextField input;
+	private Data data;
 	
 	public ItemFieldInput(Column column) {
 		super(2);
@@ -28,5 +30,13 @@ public class ItemFieldInput extends HBox {
 
 	public boolean isColumn(Column testColumn){
 		return column==testColumn;
+	}
+	
+	public void setData(Data data){
+		this.data=data;
+	}
+	
+	public Data getData(){
+		return data;
 	}
 }
