@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -25,9 +26,13 @@ public class WalletsIndexController extends IndexController {
 
 	@FXML
 	ListView<Custom> detailsPane;
+	
+	FilteredList<Wallet> filtered;
 
 	public void initialize(URL location, ResourceBundle resources) {
-		itemsList.setItems(Wallet.getAllWallets().sorted());
+		super.initialize();
+		filtered=Wallet.getAllWallets().sorted().filtered(x->x.getName().contains(searchBox.getText()));
+		itemsList.setItems(filtered);
 	}
 
 	@FXML
@@ -87,5 +92,10 @@ public class WalletsIndexController extends IndexController {
 			}
 			((Stage)searchBox.getScene().getWindow()).setScene(scene);
 		}
+	}
+
+	@Override
+	public void updateListView() {
+		filtered.setPredicate(x->x.getName().contains(searchBox.getText()));
 	}
 }

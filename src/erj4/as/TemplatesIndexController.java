@@ -3,7 +3,9 @@ package erj4.as;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -25,15 +27,19 @@ public class TemplatesIndexController extends IndexController {
 
 	@FXML
 	ListView<Template> itemsList;
-	
+
+	FilteredList<Template> filtered;
+
 	@FXML
 	VBox detailsPane;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		itemsList.setItems(Template.getAllTemplates().sorted());
+		super.initialize();
+		filtered=Template.getAllTemplates().sorted().filtered(x->x.getName().contains(searchBox.getText()));
+		itemsList.setItems(filtered);
 	}
-	
+
 	@FXML
 	public void newItem() {
 		String fileName = "new_template.fxml";
@@ -50,7 +56,7 @@ public class TemplatesIndexController extends IndexController {
 		stage.initOwner(searchBox.getScene().getWindow());
 		stage.showAndWait();
 	}
-	
+
 	@FXML
 	public void itemSelected(MouseEvent e) {
 		detailsPane.getChildren().clear();
@@ -68,5 +74,9 @@ public class TemplatesIndexController extends IndexController {
 			detailsPane.getChildren().addAll(columnLabel, new HBox(new Label("Hidden: "), cb), sep);
 		}
 		if(sep!=null) detailsPane.getChildren().remove(sep);
+	}
+	
+	public void updateListView() {
+		filtered.setPredicate(x->x.getName().contains(searchBox.getText()));
 	}
 }

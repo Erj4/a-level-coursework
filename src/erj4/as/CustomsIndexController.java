@@ -9,7 +9,6 @@ import java.util.function.Predicate;
 import org.controlsfx.control.CheckComboBox;
 
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
@@ -54,6 +53,7 @@ public class CustomsIndexController extends IndexController implements Initializ
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		super.initialize();
 		walletFilterBox.getItems().clear();
 		walletFilterBox.getItems().addAll(Wallet.getAllWallets().sorted());
 
@@ -68,24 +68,11 @@ public class CustomsIndexController extends IndexController implements Initializ
 				return true;
 			}});
 		itemsList.setItems(filtered);
-		walletFilterBox.getCheckModel().getCheckedItems().addListener(new ListChangeListener<Wallet>(){
-			@Override
-			public void onChanged(javafx.collections.ListChangeListener.Change<? extends Wallet> c) {
-				updateListView();
-			}});
-		templateFilterBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Template>(){
-			@Override
-			public void changed(ObservableValue<? extends Template> observable, Template oldValue, Template newValue) {
-				updateListView();
-			}});
-		searchBox.textProperty().addListener(new ChangeListener<String>(){
-			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				updateListView();
-			}});
+		walletFilterBox.getCheckModel().getCheckedItems().addListener((ListChangeListener<Wallet>)x->updateListView());
+		templateFilterBox.getSelectionModel().selectedItemProperty().addListener((ChangeListener<Template>)(x,y,z)->updateListView());
 	}
 
-	private void updateListView() {
+	public void updateListView() {
 		filtered.setPredicate(new Predicate<Custom>() {
 			@Override
 			public boolean test(Custom t) {

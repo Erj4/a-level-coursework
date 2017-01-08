@@ -3,6 +3,7 @@ package erj4.as;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -24,6 +25,12 @@ public abstract class IndexController extends SuperController implements Initial
 	
 	@FXML
 	public abstract void itemSelected(MouseEvent e);
+	
+	public abstract void updateListView();
+	
+	public void initialize() {
+		searchBox.textProperty().addListener((ChangeListener<String>)(x,y,z)->updateListView());
+	}
 	
 	@FXML
 	public void refresh(){
