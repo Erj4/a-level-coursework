@@ -14,7 +14,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class Encrypter {
 	private byte[] key;
 	private Cipher cipher;
-	private String cipherType = "AES";
+	private final static String cipherType = "AES";
 	
 	public Encrypter(String key, byte[] salt) {
 		try {
@@ -33,8 +33,8 @@ public class Encrypter {
 		} catch (InvalidKeyException/* | InvalidAlgorithmParameterException */e) {Main.fatalError(e, e.getMessage());} // Should not occur
 		byte[] encryptedData = new byte[cipher.getOutputSize(byteData.length)];
 		try {
-			int enc_len = cipher.update(byteData, 0, byteData.length, encryptedData, 0);
-			enc_len += cipher.doFinal(encryptedData, enc_len);
+			int encryptedLength = cipher.update(byteData, 0, byteData.length, encryptedData, 0);
+			encryptedLength += cipher.doFinal(encryptedData, encryptedLength);
 		} catch (IllegalBlockSizeException | ShortBufferException | BadPaddingException e) {Main.fatalError(e, e.getMessage());} // Should not occur
 		return encryptedData;
 	}
@@ -47,8 +47,8 @@ public class Encrypter {
 		} catch (InvalidKeyException/* | InvalidAlgorithmParameterException*/ e) {Main.fatalError(e, e.getMessage());} // Should not occur
 		byte[] decryptedData = new byte[cipher.getOutputSize(data.length)];
 		try {
-			int dec_len = cipher.update(data, 0, data.length, decryptedData, 0);
-			dec_len += cipher.doFinal(decryptedData, dec_len);
+			int decryptedLength = cipher.update(data, 0, data.length, decryptedData, 0);
+			decryptedLength += cipher.doFinal(decryptedData, decryptedLength);
 		} catch (IllegalBlockSizeException | ShortBufferException | BadPaddingException e) {
 			e.printStackTrace();
 		}
