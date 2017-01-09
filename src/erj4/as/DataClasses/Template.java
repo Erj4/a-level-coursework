@@ -74,6 +74,7 @@ public class Template {
 		try {
 			statement.setBytes(1, Main.encrypter.encrypt(name, this.iv));
 			statement.setInt(2, this.ID);
+			statement.executeUpdate();
 			this.name = name;
 		} catch (SQLException e) {
 			Main.fatalError(e, "Database access error, program must exit immediately");

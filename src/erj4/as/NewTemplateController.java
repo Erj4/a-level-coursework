@@ -62,6 +62,7 @@ public class NewTemplateController extends VBox {
     	deleteButton.setVisible(true);
     	addFieldImage.setVisible(false);
     	placeholderText.setVisible(false);
+    	nameField.setText(template.getName());
     	for(Column c:template.getColumns()) inputContainer.getChildren().add(new TemplateFieldInput(this, c));
     }
 	

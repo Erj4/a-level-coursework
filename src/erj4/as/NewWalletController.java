@@ -41,6 +41,7 @@ public class NewWalletController extends VBox implements Initializable{
 		nameField.setText(w.getName());
 		addButton.setText("SAVE WALLET");
 		addButton.setOnAction(e->saveUpdate());
+		deleteButton.setVisible(true);
 	}
 
 	@Override

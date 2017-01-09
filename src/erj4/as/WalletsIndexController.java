@@ -54,7 +54,7 @@ public class WalletsIndexController extends IndexController {
 
 	@FXML
 	public void itemSelected(MouseEvent me) {
-		if(me.getClickCount()==1) detailsPane.setItems(itemsList.getSelectionModel().getSelectedItem().getCustoms());
+		if(me==null||me.getClickCount()==1) detailsPane.setItems(itemsList.getSelectionModel().getSelectedItem().getCustoms());
 		else if(me.getClickCount()==2){
 			Wallet wallet = itemsList.getSelectionModel().getSelectedItem();
 			if (wallet==null) return;
@@ -72,6 +72,7 @@ public class WalletsIndexController extends IndexController {
 			stage.initModality(Modality.WINDOW_MODAL);
 			stage.initOwner(searchBox.getScene().getWindow());
 			stage.showAndWait();
+			itemSelected(null);
 		}
 	}
 	

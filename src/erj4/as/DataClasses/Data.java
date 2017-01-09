@@ -17,7 +17,7 @@ public class Data {
 	public Data(Custom custom, Column column, byte[] encryptedData, byte[] iv) {
 		custom.addData(this);
 		this.setColumn(column);
-		this.setEncryptedData(encryptedData);
+		this.encryptedData=encryptedData;
 		this.setIv(iv);
 		allValues.add(this);
 	}
@@ -61,8 +61,18 @@ public class Data {
 		return encryptedData;
 	}
 
-	public void setEncryptedData(byte[] encryptedData) {
-		this.encryptedData = encryptedData;
+	public void setEncryptedData(byte[] encryptedData, Custom custom) {
+		System.out.println("HERE NOW");
+		PreparedStatement statement = Main.db.newStatement("UPDATE CustomData SET encryptedData=? WHERE customID=? AND columnID=?");
+		try {
+			statement.setBytes(1, encryptedData);
+			statement.setInt(2, custom.getID());
+			statement.setInt(3, this.getColumn().getID());
+			statement.executeUpdate();
+			this.encryptedData = encryptedData;
+		} catch (SQLException e) {
+			Main.fatalError(e, "Database access error, program must exit immediately");
+		}
 	}
 
 	public byte[] getIv() {

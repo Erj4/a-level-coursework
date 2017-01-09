@@ -113,7 +113,7 @@ public class CustomsIndexController extends IndexController implements Initializ
 
 	@FXML
 	public void itemSelected(MouseEvent e) {
-		if(e.getClickCount()==1){
+		if(e==null||e.getClickCount()==1){
 			detailsPane.getChildren().clear();
 			Custom custom = itemsList.getSelectionModel().getSelectedItem();
 			if (custom==null) return;
@@ -126,7 +126,7 @@ public class CustomsIndexController extends IndexController implements Initializ
 			}
 			if(separator!=null) detailsPane.getChildren().remove(separator);
 		}
-		if(e.getClickCount()==2){
+		else if(e.getClickCount()==2){
 			Custom custom = itemsList.getSelectionModel().getSelectedItem();
 			if (custom==null) return;
 			String fileName = "new_item.fxml";
@@ -143,6 +143,7 @@ public class CustomsIndexController extends IndexController implements Initializ
 			stage.initModality(Modality.WINDOW_MODAL);
 			stage.initOwner(searchBox.getScene().getWindow());
 			stage.showAndWait();
+			itemSelected(null);
 		}
 	}
 

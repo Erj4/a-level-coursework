@@ -118,7 +118,7 @@ public class NewItemController extends VBox implements Initializable {
 		if(templateSelector.getSelectionModel().getSelectedItem()==custom.getTemplate()&&custom.getTemplate().getColumns().size()>0&&((ItemFieldInput)inputContainer.getChildren().get(0)).getData()!=null){
 			for(Node x:inputContainer.getChildren()){
 				ItemFieldInput ifi = (ItemFieldInput) x;
-				ifi.getData().setEncryptedData(Main.encrypter.encrypt(ifi.getInput(), ifi.getData().getIv()));
+				ifi.getData().setEncryptedData(Main.encrypter.encrypt(ifi.getInput(), ifi.getData().getIv()), custom);
 			}
 		}
 		else {

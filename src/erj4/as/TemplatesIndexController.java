@@ -61,7 +61,7 @@ public class TemplatesIndexController extends IndexController {
 		detailsPane.getChildren().clear();
 		Template template = itemsList.getSelectionModel().getSelectedItem();
 		if (template==null) return;
-		if (e.getClickCount()==1) {
+		if (e==null||e.getClickCount()==1) {
 			Separator sep = null;
 			for (Column c : template.getColumns()) {
 				Label columnLabel = new Label(c.getName());
@@ -93,6 +93,7 @@ public class TemplatesIndexController extends IndexController {
 			stage.initModality(Modality.WINDOW_MODAL);
 			stage.initOwner(searchBox.getScene().getWindow());
 			stage.showAndWait();
+			itemSelected(null);
 		}
 	}
 	
