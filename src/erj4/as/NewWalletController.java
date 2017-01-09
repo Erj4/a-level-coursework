@@ -25,6 +25,9 @@ public class NewWalletController extends VBox implements Initializable{
 
 	@FXML
 	public Button addButton;
+	
+	@FXML
+	private Button deleteButton;
 
 	private Wallet wallet;
 
@@ -65,6 +68,12 @@ public class NewWalletController extends VBox implements Initializable{
 		for (Custom y:inputContainer.getCheckModel().getCheckedItems()) if (!wallet.getCustoms().contains(y)) wallet.addCustom(y); // Add new checked
 		
 		this.setUserData(wallet);
+		((Stage) inputContainer.getScene().getWindow()).close();
+	}
+	
+	@FXML
+	void delete(){
+		wallet.delete();
 		((Stage) inputContainer.getScene().getWindow()).close();
 	}
 }

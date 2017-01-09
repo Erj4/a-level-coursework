@@ -35,7 +35,7 @@
             <VBox>
                <children>
                   <VBox fx:id="inputContainer" spacing="5.0" VBox.vgrow="ALWAYS" />
-                  <ImageView fitHeight="150.0" fitWidth="30.0" onMouseClicked="#addField" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="addFieldImage" fitHeight="150.0" fitWidth="30.0" onMouseClicked="#addField" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@ic_add_circle_black_48dp_2x.png" />
                      </image>
@@ -52,7 +52,9 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </VBox.margin>
          <children>
-            <Button defaultButton="true" mnemonicParsing="false" onAction="#addTemplateFromScene" styleClass="nextButton" text="ADD TEMPLATE" />
+            <Button fx:id="deleteButton" defaultButton="true" mnemonicParsing="false" onAction="#delete" styleClass="deleteButton" text="DELETE" visible="false" />
+            <Pane HBox.hgrow="ALWAYS" />
+            <Button fx:id="addButton" defaultButton="true" mnemonicParsing="false" onAction="#addTemplateFromScene" styleClass="nextButton" text="ADD TEMPLATE" />
          </children>
       </HBox>
    </children>

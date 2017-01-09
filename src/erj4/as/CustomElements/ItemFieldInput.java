@@ -1,5 +1,6 @@
 package erj4.as.CustomElements;
 
+import erj4.as.Main;
 import erj4.as.DataClasses.Column;
 import erj4.as.DataClasses.Data;
 import javafx.scene.control.Label;
@@ -34,6 +35,7 @@ public class ItemFieldInput extends HBox {
 	
 	public void setData(Data data){
 		this.data=data;
+		this.input.setText(Main.encrypter.decrypt(data.getEncryptedData(), data.getIv()));
 	}
 	
 	public Data getData(){

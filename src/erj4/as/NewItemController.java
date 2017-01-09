@@ -31,16 +31,16 @@ public class NewItemController extends VBox implements Initializable {
 
 	@FXML
 	private VBox inputContainer;
-	
+
 	@FXML
 	private TextField nameField;
-	
+
 	@FXML
 	private Button deleteButton;
-	
+
 	@FXML
 	private Button saveButton;
-	
+
 	private Custom custom;
 
 	@Override
@@ -51,7 +51,7 @@ public class NewItemController extends VBox implements Initializable {
 	@FXML
 	void newTemplate() {
 		String fileName = "new_template.fxml";
-		
+
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(fileName));
 		Stage stage = new Stage();
 		stage.setTitle("Add new template");
@@ -101,7 +101,7 @@ public class NewItemController extends VBox implements Initializable {
 		nameField.setText(custom.getName());
 		templateSelector.getSelectionModel().select(custom.getTemplate());
 		templateSelected();
-		
+
 		for(Node x:inputContainer.getChildren()) {
 			ItemFieldInput ifi = (ItemFieldInput) x;
 			Data d = null;
@@ -112,14 +112,33 @@ public class NewItemController extends VBox implements Initializable {
 		saveButton.setText("SAVE");
 		saveButton.setOnAction(e->saveUpdate());
 	}
-	
+
 	private void saveUpdate() {
-		
+		custom.setName(nameField.getText());
+		if(templateSelector.getSelectionModel().getSelectedItem()==custom.getTemplate()&&custom.getTemplate().getColumns().size()>0&&((ItemFieldInput)inputContainer.getChildren().get(0)).getData()!=null){
+			for(Node x:inputContainer.getChildren()){
+				ItemFieldInput ifi = (ItemFieldInput) x;
+				ifi.getData().setEncryptedData(Main.encrypter.encrypt(ifi.getInput(), ifi.getData().getIv()));
+			}
+		}
+		else {
+			for(Data d:custom.getData()){
+				d.delete(custom);
+			}
+			custom.getData().clear();
+			for (Node x:inputContainer.getChildren()){
+				ItemFieldInput ifi = (ItemFieldInput) x;
+				byte[] iv = Main.getIV();
+				new Data(custom, ifi.getColumn(), ifi.getInput(), iv);
+			}
+		}
+		((Stage) inputContainer.getScene().getWindow()).close();
 	}
-	
+
 	@FXML
 	void delete(){
-		
+		custom.delete();
+		((Stage) inputContainer.getScene().getWindow()).close();
 	}
-	
+
 }

@@ -14,18 +14,20 @@ public class Column {
 	private final int ID;
 	private String name;
 	private boolean isPassword;
-	//TODO column options eg. sensitive (hide with asterisks)
+	byte[] iv;
 
 	public Column(int ID, Template template, byte[] encryptedColumnName, byte[] iv, boolean isPassword) {
 		this.ID=ID;
 		this.name=Main.encrypter.decrypt(encryptedColumnName, iv);
-		this.setIsPassword(isPassword);
+		this.iv=iv;
+		this.isPassword=isPassword;
 		template.addColumn(this);
 	}
 
 	public Column(Template template, String name, byte[] iv, boolean isPassword) {
 		this.name=name;
 		this.isPassword=isPassword;
+		this.iv=iv;
 		template.addColumn(this);
 		int tempID = -1;
 		PreparedStatement statement = Main.db.newStatement("INSERT INTO CustomColumns (encryptedColumnName, templateID, iv, isPassword) VALUES (?, ?, ?, ?);");
@@ -72,7 +74,14 @@ public class Column {
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		PreparedStatement statement = Main.db.newStatement("UPDATE CustomColumns SET encryptedColumnName=? WHERE columnID=?");
+		try {
+			statement.setBytes(1, Main.encrypter.encrypt(name, this.iv));
+			statement.setInt(2, this.ID);
+			this.name = name;
+		} catch (SQLException e) {
+			Main.fatalError(e, "Database access error, program must exit immediately");
+		}
 	}
 
 	public boolean isPassword() {
@@ -80,7 +89,14 @@ public class Column {
 	}
 
 	public void setIsPassword(boolean isPassword) {
-		this.isPassword = isPassword;
+		PreparedStatement statement = Main.db.newStatement("UPDATE CustomColumns SET isPassword=? WHERE columnID=?");
+		try {
+			statement.setBoolean(1, this.isPassword);
+			statement.setInt(2, this.ID);
+			this.isPassword = isPassword;
+		} catch (SQLException e) {
+			Main.fatalError(e, "Database access error, program must exit immediately");
+		}
 	}
 
 	@Override

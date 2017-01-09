@@ -36,6 +36,8 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </VBox.margin>
          <children>
+            <Button fx:id="deleteButton" defaultButton="true" mnemonicParsing="false" onAction="#delete" styleClass="deleteButton" text="DELETE" visible="false" />
+            <Pane HBox.hgrow="ALWAYS" />
             <Button fx:id="addButton" defaultButton="true" mnemonicParsing="false" onAction="#addWalletFromScene" styleClass="nextButton" text="ADD WALLET" />
          </children>
       </HBox>

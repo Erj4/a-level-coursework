@@ -14,16 +14,19 @@ public class Wallet {
 	private final int ID;
 	private String name;
 	private ObservableList<Custom> customs = FXCollections.observableArrayList();
+	private byte[] iv;
 
 	public Wallet(int ID, byte[] encryptedName, byte[] iv){
 		this.ID=ID;
-		this.setName(Main.encrypter.decrypt(encryptedName, iv));
+		this.name=Main.encrypter.decrypt(encryptedName, iv);
+		this.iv=iv;
 		allWallets.add(this);
 	}
 
 	public Wallet(String name, byte[] iv) {
 		this.name=name;
-		int tempID = -1;
+		this.iv=iv;
+		int tempID=-1;
 		PreparedStatement statement = Main.db.newStatement("INSERT INTO Wallets (encryptedWalletName, owner, iv) VALUES (?, ?, ?);");
 		try {
 			statement.setBytes(1, Main.encrypter.encrypt(name, iv));
@@ -67,7 +70,14 @@ public class Wallet {
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		PreparedStatement statement = Main.db.newStatement("UPDATE Wallets SET encryptedWalletName=? WHERE walletID=?");
+		try {
+			statement.setBytes(1, Main.encrypter.encrypt(name, this.iv));
+			statement.setInt(2, this.ID);
+			this.name = name;
+		} catch (SQLException e) {
+			Main.fatalError(e, "Database access error, program must exit immediately");
+		}
 	}
 
 	public void addCustom(Custom custom) {
@@ -102,6 +112,27 @@ public class Wallet {
 
 	public ObservableList<Custom> getCustoms(){
 		return this.customs;
+	}
+	
+	public void delete(){
+		PreparedStatement delinkStatement = Main.db.newStatement("DELETE FROM CustominWallet WHERE walletID=?;");
+		try {
+			delinkStatement.setInt(1, this.getID());
+			delinkStatement.executeUpdate();
+			this.customs.clear();
+		}
+		catch (SQLException e) {
+			Main.fatalError(e, "Database access error, program must exit immediately");
+		}
+		PreparedStatement deleteStatement = Main.db.newStatement("DELETE FROM Wallets WHERE walletID=?;");
+		try {
+			deleteStatement.setInt(1, this.getID());
+			deleteStatement.executeUpdate();
+			allWallets.remove(this);
+		}
+		catch (SQLException e) {
+			Main.fatalError(e, "Database access error, program must exit immediately");
+		}
 	}
 
 	@Override

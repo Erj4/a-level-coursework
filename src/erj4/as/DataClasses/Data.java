@@ -72,4 +72,16 @@ public class Data {
 	public void setIv(byte[] iv) {
 		this.iv = iv;
 	}
+	
+	public void delete(Custom custom){
+		PreparedStatement statement = Main.db.newStatement("DELETE FROM CustomData WHERE customID=? AND columnID=?;");
+		try {
+			statement.setInt(1, custom.getID());
+			statement.setInt(2, this.column.getID());
+			statement.executeUpdate();
+		}
+		catch (SQLException e) {
+			Main.fatalError(e, "Database access error, program must exit immediately");
+		}
+	}
 }

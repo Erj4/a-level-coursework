@@ -14,15 +14,18 @@ public class Template {
 	private ObservableList<Column> columns = FXCollections.observableArrayList();
 	private final int ID;
 	private String name;
+	private byte[] iv;
 	
 	public Template(int ID, byte[] encryptedName, byte[] iv){
 		this.ID=ID;
 		this.name=Main.encrypter.decrypt(encryptedName, iv);
+		this.iv=iv;
 		allTemplates.add(this);
 	}
 	
 	public Template(String name, byte[] iv){
 		this.name=name;
+		this.iv=iv;
 		int tempID = -1;
 		PreparedStatement insertStatement = Main.db.newStatement("INSERT INTO Templates (encryptedTemplateName, owner, iv) VALUES (?, ?, ?);");
         try {
@@ -67,12 +70,14 @@ public class Template {
 	}
 
 	public void setName(String name) {
-		this.name = name;
-	}
-	
-	@Override
-	public String toString(){
-		return name;
+		PreparedStatement statement = Main.db.newStatement("UPDATE Templates SET encryptedTemplateName=? WHERE templateID=?");
+		try {
+			statement.setBytes(1, Main.encrypter.encrypt(name, this.iv));
+			statement.setInt(2, this.ID);
+			this.name = name;
+		} catch (SQLException e) {
+			Main.fatalError(e, "Database access error, program must exit immediately");
+		}
 	}
 
 	public void addColumn(Column c) {
@@ -81,5 +86,22 @@ public class Template {
 	
 	public ObservableList<Column> getColumns(){
 		return columns;
+	}
+	
+	public void delete(){
+		PreparedStatement statement = Main.db.newStatement("DELETE FROM Templates WHERE templateID=?;");
+		try {
+			statement.setInt(1, this.getID());
+			statement.executeUpdate();
+			allTemplates.remove(this);
+		}
+		catch (SQLException e) {
+			Main.fatalError(e, "Database access error, program must exit immediately");
+		}
+	}
+	
+	@Override
+	public String toString(){
+		return name;
 	}
 }

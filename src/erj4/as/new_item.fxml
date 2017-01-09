@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -12,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER_RIGHT" prefHeight="400.0" prefWidth="600.0" styleClass="main" stylesheets="@super.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="erj4.as.NewItemController">
+<VBox alignment="CENTER_RIGHT" prefHeight="400.0" prefWidth="600.0" styleClass="main" stylesheets="@super.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="erj4.as.NewItemController">
    <children>
       <VBox spacing="2.0">
          <children>
@@ -77,7 +82,7 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </VBox.margin>
          <children>
-            <Button fx:id="deleteButton" defaultButton="true" mnemonicParsing="false" onAction="#delete" onMouseClicked="#addItemFromScene" styleClass="deleteButton" text="DELETE" visible="false" />
+            <Button fx:id="deleteButton" defaultButton="true" mnemonicParsing="false" onAction="#delete" styleClass="deleteButton" text="DELETE" visible="false" />
             <Pane HBox.hgrow="ALWAYS" />
             <Button fx:id="saveButton" defaultButton="true" mnemonicParsing="false" onAction="#addItemFromScene" styleClass="nextButton" text="ADD ITEM" />
          </children>

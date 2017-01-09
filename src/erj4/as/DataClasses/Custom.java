@@ -15,17 +15,20 @@ public class Custom {
 	private final int ID;
 	private Template template;
 	private String name;
+	private byte[] iv;
 	
 	public Custom(int ID, Template template, byte[] encryptedName, byte[] iv) {
 		this.ID=ID;
-		this.setTemplate(template);
-		this.setName(Main.encrypter.decrypt(encryptedName, iv));
+		this.template=template;
+		this.name=Main.encrypter.decrypt(encryptedName, iv);
+		this.iv=iv;
 		allCustoms.add(this);
 	}
 	
 	public Custom(Template template, String name, byte[] iv) {
 		this.template=template;
 		this.name=name;
+		this.iv=iv;
 		int tempID = -1;
 		PreparedStatement statement = Main.db.newStatement("INSERT INTO Customs (templateID, encryptedCustomName, iv) VALUES (?, ?, ?);");
 		try {
@@ -69,16 +72,19 @@ public class Custom {
 		return template;
 	}
 
-	public void setTemplate(Template template) {
-		this.template = template;
-	}
-
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		PreparedStatement statement = Main.db.newStatement("UPDATE Customs SET encryptedCustomName=? WHERE customID=?");
+		try {
+			statement.setBytes(1, Main.encrypter.encrypt(name, this.iv));
+			statement.setInt(2, this.ID);
+			this.name = name;
+		} catch (SQLException e) {
+			Main.fatalError(e, "Database access error, program must exit immediately");
+		}
 	}
 	
 	public void addData(Data d){
@@ -87,6 +93,18 @@ public class Custom {
 	
 	public ObservableList<Data> getData(){
 		return data;
+	}
+	
+	public void delete(){
+		PreparedStatement statement = Main.db.newStatement("DELETE FROM Customs WHERE customID=?;");
+		try {
+			statement.setInt(1, this.getID());
+			statement.executeUpdate();
+			allCustoms.remove(this);
+		}
+		catch (SQLException e) {
+			Main.fatalError(e, "Database access error, program must exit immediately");
+		}
 	}
 	
 	@Override

@@ -3,7 +3,6 @@ package erj4.as;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.function.Predicate;
 
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
@@ -62,18 +61,39 @@ public class TemplatesIndexController extends IndexController {
 		detailsPane.getChildren().clear();
 		Template template = itemsList.getSelectionModel().getSelectedItem();
 		if (template==null) return;
-		Separator sep=null;
-		for (Column c:template.getColumns()){
-			Label columnLabel = new Label(c.getName());
-			columnLabel.setFont(Font.font(Font.getDefault().getFamily(), FontWeight.BOLD, Font.getDefault().getSize()));
-			sep=new Separator();
-			CheckBox cb = new CheckBox();
-			cb.setOpacity(0.8);
-			cb.setSelected(c.isPassword());
-			cb.setDisable(true);
-			detailsPane.getChildren().addAll(columnLabel, new HBox(new Label("Hidden: "), cb), sep);
+		if (e.getClickCount()==1) {
+			Separator sep = null;
+			for (Column c : template.getColumns()) {
+				Label columnLabel = new Label(c.getName());
+				columnLabel.setFont(Font.font(Font.getDefault().getFamily(),
+						FontWeight.BOLD, Font.getDefault().getSize()));
+				sep = new Separator();
+				CheckBox cb = new CheckBox();
+				cb.setOpacity(0.8);
+				cb.setSelected(c.isPassword());
+				cb.setDisable(true);
+				detailsPane.getChildren().addAll(columnLabel,
+						new HBox(new Label("Hidden: "), cb), sep);
+			}
+			if (sep != null)
+				detailsPane.getChildren().remove(sep);
 		}
-		if(sep!=null) detailsPane.getChildren().remove(sep);
+		else if (e.getClickCount()==2){
+			String fileName = "new_template.fxml";
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(fileName));
+			Stage stage = new Stage();
+			stage.setTitle("Edit template");
+			try {
+				stage.setScene(new Scene(loader.load()));
+				((NewTemplateController) loader.getController()).editMode(template);
+			} catch (IOException ex) {
+				Main.fatalError(ex, "An error occured while trying to load the resource "+fileName+", so the program must exit immediately");
+			}
+			stage.setResizable(false);
+			stage.initModality(Modality.WINDOW_MODAL);
+			stage.initOwner(searchBox.getScene().getWindow());
+			stage.showAndWait();
+		}
 	}
 	
 	public void updateListView() {
