@@ -22,7 +22,7 @@ public class DataDisplay extends HBox {
 		}
 		
 		String asterisks = new String();
-		for(int i=0;i<value.length();i++) asterisks+="✱";
+		for(int i=0;i<8;i++) asterisks+="\u2731";
 		asteriskLabel=new Label(asterisks);
 		this.getChildren().add(asteriskLabel);
 		
