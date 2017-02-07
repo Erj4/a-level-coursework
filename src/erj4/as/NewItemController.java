@@ -46,6 +46,7 @@ public class NewItemController extends VBox implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources){
 		templateSelector.setItems(Template.getAllTemplates().sorted());
+		placeholderText.managedProperty().bind(placeholderText.visibleProperty());
 	}
 
 	@FXML

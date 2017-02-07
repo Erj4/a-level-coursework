@@ -1,17 +1,21 @@
 package erj4.as;
 
 import java.io.IOException;
+import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.ResourceBundle;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
@@ -19,12 +23,21 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-public class LoginController extends VBox{
+public class LoginController extends VBox implements Initializable{
+	
 	@FXML private TextField usernameField;
 	@FXML private PasswordField passwordField;
+	@FXML private Label validationField;
+
+	public void initialize(URL u, ResourceBundle r) {
+		validationField.managedProperty().bind(validationField.visibleProperty());
+		usernameField.textProperty().addListener(x->clearInvalid());
+		passwordField.textProperty().addListener(x->clearInvalid());
+	}
 
 	@FXML
 	public void authenticate(){
+		clearInvalid();
 		PreparedStatement s = Main.db.newStatement("SELECT hskey, salt FROM Users WHERE username=?");
 		try {
 			s.setString(1, usernameField.getText());
@@ -47,11 +60,25 @@ public class LoginController extends VBox{
 		}
 		if(!resultFound) {
 			System.out.println("User not found");
+			invalid("User not found");
 			return;
 		}
 		if (passwordIsCorrect(passwordField.getText(), salt, shPassword))
 			logIn(usernameField.getText(), passwordField.getText(), salt);
-		else System.out.println("Incorrect password");
+		else {
+			System.out.println("Incorrect password");
+			invalid("Incorrect password");
+		}
+	}
+	
+	private void invalid(String message){
+		validationField.setText(message);
+		validationField.setVisible(true);
+	}
+	
+	private void clearInvalid(){
+		validationField.setText("");
+		validationField.setVisible(false);
 	}
 
 	private boolean passwordIsCorrect(String password, byte[] salt, byte[] correctHash) {
@@ -69,7 +96,6 @@ public class LoginController extends VBox{
 	@FXML
 	public void newUser(){
 		String fileName = "new_user.fxml";
-		//
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(fileName));
 		Stage stage = new Stage();
 		stage.setTitle("Add new user");
@@ -78,7 +104,6 @@ public class LoginController extends VBox{
 		} catch (IOException e) {
 			Main.fatalError(e, "An error occured while trying to load the resource "+fileName+", so the program must exit immediately");
 		}
-		stage.setResizable(false);
 		stage.initModality(Modality.WINDOW_MODAL);
 		stage.initOwner(usernameField.getScene().getWindow());
 		stage.showAndWait();

@@ -34,7 +34,7 @@ public class Main extends Application {
 		Scene scene = null;
 		try {
 			root = (Parent)FXMLLoader.load(getClass().getResource(fileName));
-			scene = new Scene(root, 300, 130);
+			scene = new Scene(root);
 		} catch (Exception e) {
 			fatalError(e, "An error occured while trying to load the resource "+fileName+", so the program must exit immediately");
 		}

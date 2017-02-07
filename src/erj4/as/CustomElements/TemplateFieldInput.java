@@ -2,8 +2,6 @@ package erj4.as.CustomElements;
 
 import erj4.as.NewTemplateController;
 import erj4.as.DataClasses.Column;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -25,12 +23,7 @@ public class TemplateFieldInput extends HBox {
 
 		Button removeButton = new Button("Remove");
 		this.getChildren().add(removeButton);
-		removeButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				remove();
-			}
-		});
+		removeButton.setOnAction(x->remove());
 		
 		VBox form = new VBox(2);
 		HBox nameH = new HBox(2);

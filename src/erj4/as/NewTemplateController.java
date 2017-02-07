@@ -1,9 +1,13 @@
 package erj4.as;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import erj4.as.CustomElements.TemplateFieldInput;
 import erj4.as.DataClasses.Column;
 import erj4.as.DataClasses.Template;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -12,7 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class NewTemplateController extends VBox {
+public class NewTemplateController extends VBox implements Initializable {
 	
 	@FXML
     public Label placeholderText;
@@ -36,6 +40,10 @@ public class NewTemplateController extends VBox {
 	
 	public NewTemplateController() {
 		this.setUserData(null);
+	}
+
+	public void initialize(URL u, ResourceBundle r) {
+		placeholderText.managedProperty().bind(placeholderText.visibleProperty());
 	}
 
     @FXML
