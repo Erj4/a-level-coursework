@@ -59,11 +59,9 @@ public class LoginController extends VBox implements Initializable{
 			e.printStackTrace();
 		}
 		if(!resultFound) {
-			System.out.println("User not found");
 			invalid("User not found");
-			return;
 		}
-		if (passwordIsCorrect(passwordField.getText(), salt, shPassword))
+		else if (passwordIsCorrect(passwordField.getText(), salt, shPassword))
 			logIn(usernameField.getText(), passwordField.getText(), salt);
 		else {
 			System.out.println("Incorrect password");
@@ -72,13 +70,17 @@ public class LoginController extends VBox implements Initializable{
 	}
 	
 	private void invalid(String message){
+		System.out.println(message);
 		validationField.setText(message);
 		validationField.setVisible(true);
+		((Stage) validationField.getScene().getWindow()).sizeToScene();
 	}
 	
 	private void clearInvalid(){
+		boolean shouldResize = !validationField.textProperty().isEmpty().getValue();
 		validationField.setText("");
 		validationField.setVisible(false);
+		if (shouldResize) ((Stage) validationField.getScene().getWindow()).sizeToScene();
 	}
 
 	private boolean passwordIsCorrect(String password, byte[] salt, byte[] correctHash) {
@@ -107,6 +109,8 @@ public class LoginController extends VBox implements Initializable{
 		stage.initModality(Modality.WINDOW_MODAL);
 		stage.initOwner(usernameField.getScene().getWindow());
 		stage.showAndWait();
+		stage.setResizable(false);
+		stage.sizeToScene();
 		String[] userAndPass = (String[]) ((Node) loader.getController()).getUserData();
 		String username = userAndPass[0];
 		String password = userAndPass[1];

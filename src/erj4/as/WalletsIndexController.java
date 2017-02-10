@@ -31,7 +31,7 @@ public class WalletsIndexController extends IndexController {
 
 	public void initialize(URL location, ResourceBundle resources) {
 		super.initialize();
-		filtered=Wallet.getAllWallets().sorted().filtered(x->x.getName().contains(searchBox.getText()));
+		filtered=Wallet.getAllWallets().sorted().filtered(x->x.getName().toLowerCase().contains(searchBox.getText().toLowerCase()));
 		itemsList.setItems(filtered);
 	}
 
@@ -97,6 +97,6 @@ public class WalletsIndexController extends IndexController {
 
 	@Override
 	public void updateListView() {
-		filtered.setPredicate(x->x.getName().contains(searchBox.getText()));
+		filtered.setPredicate(x->x.getName().toLowerCase().contains(searchBox.getText().toLowerCase()));
 	}
 }

@@ -62,6 +62,7 @@ public class NewUserController extends VBox implements Initializable {
 			((Stage)usernameField.getScene().getWindow()).close();
 		}
 		else {
+			((Stage) validationBox.getScene().getWindow()).sizeToScene();
 			System.out.println("Failed to create new user");
 		}
 	}
@@ -92,11 +93,14 @@ public class NewUserController extends VBox implements Initializable {
 		reason.setTextFill(Color.RED);
 		validationBox.getChildren().add(reason);
 		validationBox.setVisible(true);
+		
 	}
 
 	private void clearInvalid() {
+		boolean shouldResize = !validationBox.getChildren().isEmpty();
 		validationBox.setVisible(false);
 		validationBox.getChildren().clear();
+		if (shouldResize) ((Stage) validationBox.getScene().getWindow()).sizeToScene();
 	}
 
 	@FXML

@@ -35,7 +35,7 @@ public class TemplatesIndexController extends IndexController {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		super.initialize();
-		filtered=Template.getAllTemplates().sorted().filtered(x->x.getName().contains(searchBox.getText()));
+		filtered=Template.getAllTemplates().sorted().filtered(x->x.getName().toLowerCase().contains(searchBox.getText().toLowerCase()));
 		itemsList.setItems(filtered);
 	}
 
@@ -98,6 +98,6 @@ public class TemplatesIndexController extends IndexController {
 	}
 	
 	public void updateListView() {
-		filtered.setPredicate(x->x.getName().contains(searchBox.getText()));
+		filtered.setPredicate(x->x.getName().toLowerCase().contains(searchBox.getText().toLowerCase()));
 	}
 }
