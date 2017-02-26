@@ -64,7 +64,7 @@ public class CustomsIndexController extends IndexController implements Initializ
 			public boolean test(Custom t) {
 				if(templateFilterBox.getSelectionModel().getSelectedItem()!=null && t.getTemplate()!=templateFilterBox.getSelectionModel().getSelectedItem()) return false;
 				for(Wallet w:walletFilterBox.getCheckModel().getCheckedItems()) if(!w.getCustoms().contains(t)) return false;
-				if(!t.getName().toLowerCase().contains(searchBox.getText().toLowerCase())) return false;
+				if(!t.getName().contains(searchBox.getText())) return false;
 				return true;
 			}});
 		itemsList.setItems(filtered);
@@ -78,7 +78,7 @@ public class CustomsIndexController extends IndexController implements Initializ
 			public boolean test(Custom t) {
 				if(templateFilterBox.getSelectionModel().getSelectedItem()!=null && t.getTemplate()!=templateFilterBox.getSelectionModel().getSelectedItem()) return false;
 				for(Wallet w:walletFilterBox.getCheckModel().getCheckedItems()) if(!w.getCustoms().contains(t)) return false;
-				if(!t.getName().toLowerCase().contains(searchBox.getText().toLowerCase())) return false;
+				if(!t.getName().contains(searchBox.getText())) return false;
 				return true;
 			}});
 	}
