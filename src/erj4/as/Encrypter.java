@@ -16,7 +16,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class Encrypter {
 	private byte[] key;
 	private Cipher cipher;
-	private final static String cipherType = "AES/CBC/NoPadding";
+	private final static String cipherType = "AES/CBC/PKCS5Padding";
 	private final static String cipherName = "AES";
 	
 	public Encrypter(String key, byte[] salt) {
