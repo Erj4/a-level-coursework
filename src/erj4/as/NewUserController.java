@@ -82,7 +82,7 @@ public class NewUserController extends VBox implements Initializable {
 			failed=true;
 		}
 		if (failures[3]) {
-			invalid("User already exists");
+			invalid("Weak password");
 			failed=true;
 		}
 		return failed;

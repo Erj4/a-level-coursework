@@ -119,28 +119,30 @@ public class DatabaseConnection {
 	}
 
 	/* This method is used to prepare each new query. The query isn't executed until later. */
-	public PreparedStatement newStatement(String query)
+	public PreparedStatement newStatement(String statement)
 	{
-		PreparedStatement statement = null;
+		PreparedStatement outputStatement = null;
 		try {
-			statement = connection.prepareStatement(query);
+			outputStatement = connection.prepareStatement(statement);
 		}
 		catch (SQLException resultsexception) 
 		{
 			System.out.println("Database statement error: " + resultsexception.getMessage());
 		}
-		return statement;
+		return outputStatement;
 	}
 
 	/* This method is used to actually execute a query that has previously been prepared. */
-	public ResultSet runQuery(PreparedStatement statement)
+	public ResultSet runQuery(PreparedStatement query)
 	{               
 		try {            
-			return statement.executeQuery();           
+			return query.executeQuery();           
 		}
-		catch (SQLException queryexception) 
-		{
+		catch (SQLException queryexception) {
 			System.out.println("Database query error: " + queryexception.getMessage());
+			return null;
+		}
+		catch (NullPointerException queryexception) {
 			return null;
 		}
 	}
@@ -151,10 +153,10 @@ public class DatabaseConnection {
 		try {            
 			statement.executeUpdate();           
 		}
-		catch (SQLException queryexception) 
-		{
+		catch (SQLException queryexception) {
 			System.out.println("Database query error: " + queryexception.getMessage());
 		}
+		catch (NullPointerException queryexception) {}
 	}
 
 	/* Finally, this method is called when the application is terminating to close the database connection. */
