@@ -17,6 +17,7 @@ public class Encrypter {
 	private byte[] key;
 	private Cipher cipher;
 	private final static String cipherType = "AES/CBC/NoPadding";
+	private final static String cipherName = "AES";
 	
 	public Encrypter(String key, byte[] salt) {
 		try {
@@ -28,7 +29,7 @@ public class Encrypter {
 	public byte[] encrypt(String data, byte[] iv){
 		byte[] byteData = data.getBytes();
 		// SRC stackoverflow.com/questions/1205135/how-to-encrypt-string-in-java
-		SecretKeySpec keySpec = new SecretKeySpec(key, cipherType);
+		SecretKeySpec keySpec = new SecretKeySpec(key, cipherName);
 		IvParameterSpec ivSpec = new IvParameterSpec(iv);
 		try {
 			cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
@@ -42,7 +43,7 @@ public class Encrypter {
 	}
 	
 	public String decrypt(byte[] data, byte[] iv) {
-		SecretKeySpec keySpec = new SecretKeySpec(key, cipherType);
+		SecretKeySpec keySpec = new SecretKeySpec(key, cipherName);
 		IvParameterSpec ivSpec = new IvParameterSpec(iv);
 		try {
 			cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
